@@ -1,8 +1,12 @@
-
 {
   "version": 2,
   "builds": [{ "src": "package.json", "use": "@vercel/static-build" }],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "https://multi-ai-models-production.up.railway.app/api/$1" }
+  ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://multi-ai-models-production.up.railway.app/api/$1" }
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
+
+
