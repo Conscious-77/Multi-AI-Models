@@ -1,0 +1,199 @@
+/* 输入测试页面样式 */
+.input-test-page {
+  height: 100vh;
+  background: linear-gradient(135deg, #ffeef8 0%, #f0f8ff 50%, #e6e6fa 100%);
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+}
+
+.test-container {
+  display: flex;
+  height: 100vh;
+  position: relative;
+}
+
+/* 品牌区域 */
+.brand-section {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255,255,255,.15);
+  border-right: 1px solid rgba(255,255,255,.2);
+}
+
+.brand-content {
+  text-align: center;
+}
+
+.brand-title {
+  font-size: 42px;
+  font-weight: 300;
+  letter-spacing: -1px;
+  color: #2d3748;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.brand-subtitle {
+  font-size: 12px;
+  color: #718096;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* 输入区域 */
+.input-section {
+  flex: 1;
+  display: flex;
+  align-items: flex-end; /* 改为底部对齐 */
+  justify-content: center;
+  position: relative;
+  padding: 0;
+}
+
+.input-container {
+  width: 100%;
+  max-width: 980px;
+  position: fixed;
+  bottom: 50vh; /* 底部在屏幕垂直中心线 */
+  left: 50%;
+  transform: translateX(-50%); /* 水平居中 */
+  display: flex;
+  align-items: flex-end; /* 底部对齐 */
+  justify-content: center;
+  overflow: visible;
+  padding: 0;
+  z-index: 10;
+  /* 确保容器不会因为内容变化而移动 */
+  height: auto;
+  min-height: 0;
+}
+
+/* 新的输入包装容器 - 纯透明原生效果 */
+.input-wrapper {
+  width: 100%;
+  position: relative;
+  background: transparent; /* 纯透明背景 */
+  padding: 20px;
+  /* 移除所有边框和描边 */
+}
+
+/* 输入框样式 - 使用CSS实现从下往上输入 */
+.input-test-page .test-input {
+  position: relative !important;
+  width: 100% !important;
+  height: 360px !important; /* 固定高度：10行 * 2.0行高 * 18px字体 = 360px */
+  background: transparent !important;
+  border: none !important; /* 移除红色调试边框 */
+  outline: none !important;
+  font-family: 'SF Mono','Monaco','Fira Code', monospace !important;
+  font-size: 18px !important;
+  color: #1a202c !important;
+  caret-color: #667eea !important;
+  resize: none !important;
+  overflow-y: auto !important; /* 恢复垂直滚动 */
+  overflow-x: hidden !important;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  padding: 16px 60px 16px 16px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  text-indent: 0 !important;
+  line-height: 1.5 !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  /* 强制重置可能冲突的样式 */
+  display: block !important;
+  vertical-align: top !important;
+  text-align: left !important;
+  /* 临时移除padding-top来测试换行符 */
+  /* padding-top: calc(360px - 32px) !important; */
+  padding-bottom: 16px !important;
+}
+
+.test-input::placeholder {
+  color: #718096;
+  font-style: italic;
+  text-indent: 0;
+}
+
+.test-input:focus {
+  background: transparent;
+  background-color: transparent;
+  outline: none;
+}
+
+.test-input:hover {
+  background: transparent;
+  background-color: transparent;
+}
+
+/* 发送按钮 */
+.send-button {
+  position: absolute;
+  right: 36px; /* 调整位置适应新的padding */
+  bottom: 36px; /* 调整位置适应新的padding */
+  width: 52px;
+  height: 44px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  color: #667eea;
+  cursor: pointer;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 20;
+}
+
+.send-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+}
+
+.send-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+/* 细滚动条样式 - 很不起眼 */
+.test-input::-webkit-scrollbar {
+  width: 4px; /* 非常细的滚动条 */
+}
+
+.test-input::-webkit-scrollbar-track {
+  background: transparent; /* 完全透明 */
+}
+
+.test-input::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1); /* 非常淡的灰色 */
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.test-input::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2); /* 稍微深一点 */
+}
+
+/* Firefox滚动条 */
+.test-input {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}

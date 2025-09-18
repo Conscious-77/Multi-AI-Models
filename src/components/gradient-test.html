@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>渐变背景测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Google Sans', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 基础渐变背景 */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffd1dc 0%, #e6e6fa 100%);
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* 光球容器 */
+        .light-orbs {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none; /* 初始隐藏 */
+        }
+
+        /* 光球基础样式 */
+        .light-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        /* 光球1 - 粉色 */
+        .light-orb:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #ffb3d9 0%, #ff8ac4 50%, #ff69b4 100%);
+            top: -100px;
+            left: -150px;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+
+        /* 光球2 - 淡蓝色 */
+        .light-orb:nth-child(2) {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, #b3d9ff 0%, #8ac4ff 50%, #69b4ff 100%);
+            top: 50%;
+            right: -100px;
+            animation-delay: -5s;
+            animation-duration: 30s;
+        }
+
+        /* 光球3 - 紫色 */
+        .light-orb:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #d1b3ff 0%, #b366ff 50%, #9933ff 100%);
+            bottom: -80px;
+            left: 30%;
+            animation-delay: -10s;
+            animation-duration: 28s;
+        }
+
+        /* 光球4 - 淡绿色 */
+        .light-orb:nth-child(4) {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, #b3ffd9 0%, #8affc4 50%, #69ffb4 100%);
+            top: 20%;
+            left: 60%;
+            animation-delay: -15s;
+            animation-duration: 22s;
+        }
+
+        /* 光球浮动动画 */
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            25% {
+                transform: translate(30px, -20px) scale(1.1) rotate(90deg);
+            }
+            50% {
+                transform: translate(-20px, 30px) scale(0.9) rotate(180deg);
+            }
+            75% {
+                transform: translate(20px, 20px) scale(1.05) rotate(270deg);
+            }
+        }
+
+        /* 光球呼吸效果 */
+        @keyframes breathe {
+            0%, 100% {
+                opacity: 0.6;
+                filter: blur(120px);
+            }
+            50% {
+                opacity: 0.8;
+                filter: blur(100px);
+            }
+        }
+
+        /* 为每个光球添加呼吸动画 */
+        .light-orb:nth-child(1) {
+            animation: float 25s infinite ease-in-out, breathe 8s infinite ease-in-out;
+        }
+
+        .light-orb:nth-child(2) {
+            animation: float 30s infinite ease-in-out, breathe 10s infinite ease-in-out;
+        }
+
+        .light-orb:nth-child(3) {
+            animation: float 28s infinite ease-in-out, breathe 12s infinite ease-in-out;
+        }
+
+        .light-orb:nth-child(4) {
+            animation: float 22s infinite ease-in-out, breathe 6s infinite ease-in-out;
+        }
+
+        /* 磨砂玻璃卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 卡片内部光晕效果 */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 50%, 
+                rgba(255, 255, 255, 0.1) 100%);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+
+        .glass-title {
+            font-size: 36px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 16px;
+            text-shadow: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-subtitle {
+            font-size: 18px;
+            color: #4a5568;
+            margin-bottom: 32px;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-content {
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-content p {
+            color: #2d3748;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 8px 0;
+            font-weight: 400;
+        }
+
+        .glass-button {
+            background: #2d3748;
+            color: #ffffff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 12px rgba(45, 55, 72, 0.3);
+        }
+
+        .glass-button:hover {
+            background: #1a202c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(45, 55, 72, 0.4);
+        }
+
+        .glass-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+        }
+
+        /* 渐变变体测试 */
+        .gradient-variants {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-variants h3 {
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .gradient-option {
+            margin: 8px 0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .gradient-option:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .gradient-option.active {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <!-- 渐变背景 -->
+    <div class="gradient-bg" id="gradientBg">
+        <!-- 光球容器 -->
+        <div class="light-orbs">
+            <div class="light-orb"></div>
+            <div class="light-orb"></div>
+            <div class="light-orb"></div>
+            <div class="light-orb"></div>
+        </div>
+    </div>
+
+    <!-- 磨砂玻璃卡片 -->
+    <div class="glass-card">
+        <h1 class="glass-title">Welcome!</h1>
+        <p class="glass-subtitle">这是一个磨砂玻璃效果测试</p>
+        <div class="glass-content">
+            <p>基于光球背景之上的磨砂玻璃模块</p>
+            <p>使用 backdrop-filter: blur(20px) 实现背景模糊</p>
+            <p>半透明背景 + 白色边框 + 圆角设计</p>
+        </div>
+        <button class="glass-button">开始体验</button>
+    </div>
+
+    <!-- 渐变变体选择器 -->
+    <div class="gradient-variants">
+        <h3>渐变变体</h3>
+        <div class="gradient-option active" data-gradient="linear-gradient(135deg, #ffd1dc 0%, #e6e6fa 100%)">
+            原始渐变
+        </div>
+        <div class="gradient-option" data-gradient="linear-gradient(135deg, #ffeef8 0%, #f0f8ff 50%, #e6e6fa 100%)">
+            柔和渐变
+        </div>
+        <div class="gradient-option" data-gradient="linear-gradient(135deg, #ffb3d9 0%, #d1b3ff 100%)">
+            深色渐变
+        </div>
+        <div class="gradient-option" data-gradient="linear-gradient(135deg, #b3d9ff 0%, #b3ffd9 100%)">
+            蓝绿渐变
+        </div>
+        <div class="gradient-option" data-gradient="linear-gradient(135deg, #ffb3b3 0%, #ffd9b3 100%)">
+            暖色渐变
+        </div>
+        <div class="gradient-option" data-gradient="linear-gradient(135deg, #ffeef8 0%, #f0f8ff 50%, #e6e6fa 100%)" data-light-orbs="true">
+            光球效果
+        </div>
+    </div>
+
+    <script>
+        // 渐变切换功能
+        document.querySelectorAll('.gradient-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // 移除所有active类
+                document.querySelectorAll('.gradient-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                
+                // 添加active类到当前选项
+                this.classList.add('active');
+                
+                // 应用渐变
+                const gradient = this.getAttribute('data-gradient');
+                document.getElementById('gradientBg').style.background = gradient;
+                
+                // 控制光球显示/隐藏
+                const lightOrbs = document.querySelector('.light-orbs');
+                if (this.hasAttribute('data-light-orbs')) {
+                    lightOrbs.style.display = 'block';
+                } else {
+                    lightOrbs.style.display = 'none';
+                }
+            });
+        });
+
+        // 磨砂玻璃按钮点击效果
+        document.querySelector('.glass-button').addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'translateY(-2px)';
+            }, 150);
+        });
+    </script>
+</body>
+</html>

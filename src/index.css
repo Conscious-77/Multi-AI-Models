@@ -1,3 +1,4 @@
+/* 基础样式 */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +6,407 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 14px; /* 基础字体大小 */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+  font-size: 13px; /* 代码字体大小 */
+}
+
+/* 聊天界面样式 */
+/* .chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f9fafb;
+} */
+
+.chat-header {
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.75rem 1.5rem; /* 减小头部padding */
+}
+
+.chat-header h1 {
+  font-size: 1rem; /* 头部标题字体 */
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.chat-header p {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0 0;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.ai {
+  justify-content: flex-start;
+}
+
+.message-content {
+  max-width: 48rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  position: relative;
+  font-size: 14px; /* 消息内容字体 */
+}
+
+.message.user .message-content {
+  background-color: #3b82f6;
+  color: white;
+  order: 2;
+}
+
+.message.ai .message-content {
+  background-color: #f3f4f6;
+  color: #1f2937;
+  order: 1;
+}
+
+.message-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0.5rem;
+  font-size: 1rem;
+}
+
+.message.user .message-avatar {
+  background-color: #3b82f6;
+  color: white;
+  order: 1;
+}
+
+.message.ai .message-avatar {
+  background-color: #d1d5db;
+  color: #6b7280;
+  order: 2;
+}
+
+/* 注释掉冲突的输入框样式，避免与ChatPage2.css冲突 */
+/* .chat-input-container {
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem;
+}
+
+.chat-input-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.chat-input-textarea {
+  flex: 1;
+  resize: none;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  min-height: 2.5rem;
+  max-height: 8rem;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.chat-input-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.chat-input-button {
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chat-input-button:hover {
+  background-color: #2563eb;
+}
+
+.chat-input-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+} */
+
+/* Markdown 样式 */
+.markdown-content {
+  line-height: 1.6;
+  font-size: 14px; /* Markdown 内容字体 */
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.markdown-content h1 { font-size: 1.4rem; } /* 标题字体 */
+.markdown-content h2 { font-size: 1.2rem; }
+.markdown-content h3 { font-size: 1.1rem; }
+
+.markdown-content p {
+  margin: 0.5rem 0;
+  font-size: 14px; /* 段落字体 */
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.markdown-content li {
+  margin: 0.25rem 0;
+  font-size: 14px; /* 列表项字体 */
+}
+
+.markdown-content code {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 13px; /* 行内代码字体 */
+}
+
+.markdown-content pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: 13px; /* 代码块字体 */
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid #d1d5db;
+  padding-left: 1rem;
+  margin: 0.5rem 0;
+  color: #6b7280;
+  font-size: 14px; /* 引用字体 */
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid #d1d5db;
+  padding: 0.5rem;
+  text-align: left;
+  font-size: 13px; /* 表格字体 */
+}
+
+.markdown-content th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+/* 加载动画 */
+.loading-dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.loading-dots div {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #9ca3af;
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.loading-dots div:nth-child(1) { animation-delay: -0.32s; }
+.loading-dots div:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* 欢迎界面 */
+.welcome-screen {
+  text-align: center;
+  color: #6b7280;
+  margin-top: 5rem;
+}
+
+.welcome-screen .emoji {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-screen h2 {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-screen p {
+  font-size: 0.875rem;
+  margin: 0.5rem 0;
+}
+
+/* 分栏布局 */
+.split-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+.left-panel {
+  width: 20%;
+  min-width: 220px;
+  border-right: 1px solid #e5e7eb;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.right-panel {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  background: #f9fafb;
+  overflow-y: auto;
+}
+.right-panel-inner {
+  padding: 1.5rem;
+  flex: 1;
+}
+.panel-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.875rem; /* 面板标题字体 */
+  color: #6b7280;
+}
+.reveal-hint {
+  margin: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px dashed #9ca3af;
+  color: #374151;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 13px; /* 提示文字字体 */
+}
+.reveal-hint:hover {
+  background: #f3f4f6;
+}
+.right-placeholder {
+  color: #6b7280;
+  font-size: 13px; /* 占位符字体 */
+}
+/* 让左侧消息更紧凑 */
+.left-panel .message {
+  margin: 0.5rem 0.75rem;
+  justify-content: flex-start;
+}
+.left-panel .message .message-content {
+  background: #eef2ff;
+  color: #1f2937;
+}
+.left-panel .message .message-avatar {
+  order: 0;
+}
+/* 右侧 markdown 内容左对齐 */
+.right-content {
+  text-align: left;
+  font-size: 14px; /* 右侧内容字体 */
+}
+
+/* 对话历史项样式 - 注释掉，避免与ChatPage2.css冲突 */
+/* .conversation-item {
+  margin: 0.5rem 0.75rem;
+  padding: 0.75rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.conversation-item:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} */
+
+.conversation-bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.conversation-content {
+  font-size: 13px; /* 对话内容字体 */
+  color: #1f2937;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.conversation-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.show-result-btn {
+  padding: 0.25rem 0.5rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 12px; /* 按钮字体 */
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.show-result-btn:hover {
+  background: #2563eb;
+}
+
+.loading-text {
+  font-size: 12px; /* 加载文字字体 */
+  color: #6b7280;
+  font-style: italic;
 }

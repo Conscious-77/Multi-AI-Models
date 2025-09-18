@@ -1,0 +1,1646 @@
+/* ==================== ChatPage2 样式隔离 ==================== */
+/* 确保 ChatPage2 的样式不被其他 CSS 文件覆盖 */
+.chat-container {
+  /* 重置可能被其他 CSS 影响的样式 */
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Google Sans', Roboto, Oxygen, Ubuntu, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.chat-container * {
+  box-sizing: border-box;
+}
+
+/* ==================== 通用变量和基础样式 ==================== */
+:root {
+  --gemini-blue: #4285f4;
+  --gemini-dark: #1a73e8;
+  --gemini-light: #8ab4f8;
+  
+  /* 深色主题变量 */
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #2a2f3e;
+  --surface-light: rgba(255, 255, 255, 0.95);
+  --surface-glass: rgba(255, 255, 255, 0.05);
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-hint: rgba(255, 255, 255, 0.5);
+  --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 16px 64px rgba(0, 0, 0, 0.4);
+  
+  /* 流式输出动画相关变量 */
+  --typing-speed: 0.15s;
+  --fade-in-duration: 0.8s;
+  --slide-in-duration: 1.0s;
+  --bounce-duration: 1.2s;
+}
+
+/* 移除过于激进的全局重置，避免影响页面底部间距 */
+* {
+  box-sizing: border-box;
+}
+
+/* 为根元素设置基础样式 */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Google Sans', Roboto, Oxygen, Ubuntu, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================== 对话页面样式 ==================== */
+.chat-container {
+  min-height: 100vh !important; /* 恢复100vh，确保至少占满视口高度 */
+  display: flex !important;
+  flex-direction: column !important;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-secondary) 100%) !important;
+  position: relative !important;
+  /* overflow: hidden !important; */ /* 临时注释，让光球显示 */
+}
+
+/* 浅色主题下，主背景变为透明，让简洁背景显示 */
+.chat-container.light-theme {
+  background: transparent !important;
+}
+
+/* 定义CSS变量，控制背景显示 */
+.chat-container {
+  --show-complex-bg: block !important;  /* 默认显示复杂背景（包括光球） */
+  --show-simple-bg: block !important;   /* 默认显示简洁背景 */
+}
+
+/* 明亮模式下的磨砂玻璃头部 */
+.chat-container.light-theme .chat-header {
+  background: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 明亮模式下的光球样式 */
+.chat-container.light-theme .orb {
+  /* 移除调试样式，使用适合浅色背景的颜色 */
+  border: none !important;
+  background-color: transparent !important;
+  filter: blur(80px) !important; /* 减少模糊度，让光球更明显 */
+  opacity: 0.9 !important; /* 提高透明度 */
+}
+
+/* 明亮模式下的光球容器 */
+.chat-container.light-theme .floating-orbs {
+  /* 移除调试样式 */
+  background-color: transparent !important;
+  border: none !important;
+}
+
+/* 背景效果 */
+.chat-container .background-gradient {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(66,133,244,.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(100,181,246,.06) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(138,180,248,.04) 0%, transparent 50%) !important;
+  z-index: 0 !important; /* 背景层 */
+  display: var(--show-complex-bg, block); /* 深色主题显示 */
+}
+
+.floating-orbs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1; /* 光球层 */
+  display: block !important; /* 强制显示光球 */
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px); /* 增加模糊度，匹配HomePage2风格 */
+  opacity: 0.7; /* 调整透明度，让光球更自然 */
+  animation: float 20s infinite ease-in-out;
+}
+
+.orb-1 {
+  width: 400px !important;
+  height: 400px !important;
+  background: radial-gradient(circle, #ffb3d9 0%, #ff8ac4 50%, #ff69b4 100%) !important; /* 粉色光球 */
+  top: -100px !important;
+  left: -150px !important;
+  animation: float 25s infinite ease-in-out, breathe 8s infinite ease-in-out !important;
+}
+
+.orb-2 {
+  width: 350px !important;
+  height: 350px !important;
+  background: radial-gradient(circle, #b3d9ff 0%, #8ac4ff 50%, #69b4ff 100%) !important; /* 淡蓝色光球 */
+  top: 50% !important;
+  right: -100px !important;
+  animation: float 30s infinite ease-in-out, breathe 10s infinite ease-in-out !important;
+}
+
+.orb-3 {
+  width: 300px !important;
+  height: 300px !important;
+  background: radial-gradient(circle, #d1b3ff 0%, #b366ff 50%, #9933ff 100%) !important; /* 紫色光球 */
+  bottom: -80px !important;
+  left: 30% !important;
+  animation: float 28s infinite ease-in-out, breathe 12s infinite ease-in-out !important;
+}
+
+.orb-4 {
+  width: 250px !important;
+  height: 250px !important;
+  background: radial-gradient(circle, #b3ffd9 0%, #8affc4 50%, #69ffb4 100%) !important; /* 淡绿色光球 */
+  top: 20% !important;
+  left: 60% !important;
+  animation: float 22s infinite ease-in-out, breathe 6s infinite ease-in-out !important;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(30px, -20px) scale(1.1) rotate(90deg); }
+  50% { transform: translate(-20px, 30px) scale(0.9) rotate(180deg); }
+  75% { transform: translate(20px, 20px) scale(1.05) rotate(270deg); }
+}
+
+/* 光球呼吸效果 */
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; filter: blur(120px); }
+  50% { opacity: 0.8; filter: blur(100px); }
+}
+
+/* 浮动粒子效果 */
+.floating-particles { 
+  position: absolute; 
+  width: 100%; 
+  height: 100%; 
+  overflow: hidden; 
+  pointer-events: none; 
+  z-index: 1; /* 光球层 */
+  display: var(--show-complex-bg, block); /* 深色主题显示 */
+}
+
+/* 浅色主题的简洁背景 - 临时注释 */
+/*
+.chat-container .simple-background {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: 
+    linear-gradient(135deg, #ffffff 0%, #f8f9fa 25%, #f0f2f5 50%, #e8eaed 75%, #f8f9fa 100%),
+    radial-gradient(circle at 20% 20%, rgba(66, 133, 244, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 85% 40%, rgba(138, 43, 226, 0.06) 0%, transparent 70%),
+    radial-gradient(circle at 30% 85%, rgba(34, 197, 94, 0.05) 0%, transparent 80%),
+    radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.04) 0%, transparent 90%) !important;
+  z-index: 0 !important;
+  display: block !important;
+}
+*/
+
+.particle { 
+  position: absolute; 
+  width: 4px; 
+  height: 4px; 
+  background: rgba(255,255,255,.5); 
+  border-radius: 50%; 
+  animation: particle-float-up 15s infinite linear; 
+}
+
+@keyframes particle-float-up {
+  from { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10% { opacity: .5; }
+  90% { opacity: .5; }
+  to { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+}
+
+/* 玻璃拟物化效果 */
+.chat-container .glass-effect {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+
+
+/* ==================== 顶部导航样式 ==================== */
+.chat-container .chat-header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 56px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 24px !important;
+  z-index: 12 !important; /* 导航层 */
+  animation: slideDown 0.5s ease-out !important;
+}
+
+.chat-title-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  background: rgba(66, 133, 244, 0.1);
+  transform: translateX(-4px);
+}
+
+.chat-title-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-title {
+  font-size: 18px; /* 从20px减少到18px，与新的高度更协调 */
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.title-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title-input {
+  padding: 6px 12px;
+  border: 1px solid var(--border-glass);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 18px; /* 从20px减少到18px，与标题保持一致 */
+  font-weight: 600;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.title-input:focus {
+  border-color: var(--gemini-blue);
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+}
+
+.icon-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.icon-button:hover {
+  background: rgba(66, 133, 244, 0.1);
+  color: var(--gemini-blue);
+  transform: rotate(15deg);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.header-actions .nav-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(66, 133, 244, 0.1);
+  border: 1px solid rgba(66, 133, 244, 0.2);
+  border-radius: 20px;
+  color: var(--gemini-blue);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.header-actions .nav-button:hover {
+  background: rgba(66, 133, 244, 0.2);
+  border-color: rgba(66, 133, 244, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
+}
+
+/* 模型信息显示 */
+.model-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.model-label {
+  opacity: 0.7;
+}
+
+.model-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  background: rgba(66, 133, 244, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(66, 133, 244, 0.2);
+}
+
+/* 主题切换按钮 */
+.theme-toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: var(--surface-glass);
+  border-radius: 50%;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 18px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+}
+
+.theme-toggle-button:hover {
+  background: var(--surface-glass);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes pulse-opacity {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ==================== 主要内容区样式 ==================== */
+.chat-main {
+  display: flex;
+  gap: 16px; /* 左右两部分的间距减少到原来的一半 */
+  padding: 72px 16px 4px 0; /* 底部padding从8px减少到4px，让距离页面下方更近 */
+  max-width: none; /* 移除最大宽度限制 */
+  width: 100%;
+  margin: 0; /* 移除margin，让左侧栏贴边 */
+  flex: 1;
+  position: relative;
+  z-index: 10; /* 内容层 */
+  min-height: 0; /* 允许子项在flex容器内正确滚动 */
+}
+
+/* ==================== 左侧对话历史样式 ==================== */
+.conversation-sidebar {
+  width: 320px; /* 从400px减少到320px，让侧边栏更窄 */
+  padding: 0px 6px 6px 6px; /* 左侧0px，其他保持6px */
+  border-radius: 8px; /* 从16px改为8px，与其他模块保持一致 */
+  position: relative; /* 让拖拉条绝对定位 */
+  animation: slideInLeft 0.6s ease-out;
+  margin-left: 16px; /* 改回16px，提供合适的左侧间距 */
+  flex-shrink: 0; /* 防止侧边栏被压缩 */
+  overflow: hidden; /* 自身不出现横向滚动条 */
+  height: calc(100vh - 80px); /* 减少高度约束，让底部间距更合理 */
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* 使内部列表能按需收缩并滚动 */
+}
+
+/* 自定义滚动条样式 - 复用回答区域的样式 */
+.conversation-list::-webkit-scrollbar {
+  width: 6px; /* 与回答区域保持一致 */
+}
+
+.conversation-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.conversation-list::-webkit-scrollbar-thumb {
+  background: rgba(66, 133, 244, 0.3); /* 与回答区域保持一致 */
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.conversation-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(66, 133, 244, 0.5); /* 与回答区域保持一致 */
+}
+
+.conversation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* 卡片间距从2.5px增加到6px，让间距更合适 */
+  padding-bottom: 8px; /* 从16px减少到8px，让底部更紧凑 */
+  overflow-y: auto; /* 列表区域滚动 */
+  overflow-x: hidden;
+  flex: 1; /* 占满剩余高度，与顶部标题分离 */
+  padding-right: 6px; /* 给滚动条留出内边距，避免遮挡内容 */
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.sidebar-title {
+  font-size: 12px; /* 与主页brand-subtitle完全一致 */
+  font-weight: 500; /* 与主页brand-subtitle完全一致 */
+  color: #718096; /* 与主页brand-subtitle完全一致 */
+  margin-bottom: 0; /* 移除底部间距，让sidebar-header的margin-bottom生效 */
+  text-transform: uppercase;
+  letter-spacing: 2px; /* 与主页brand-subtitle完全一致 */
+  text-align: center; /* 改为居中对齐 */
+}
+
+ .conversation-item {
+   display: flex;
+   align-items: center; /* 改为center，让内容垂直居中 */
+   gap: 8px; /* 从12px减少到8px，让元素间距更紧凑 */
+   padding: 6px 4px; /* 左右间距从8px减少到4px，让模块更紧凑 */
+   border-radius: 8px; /* 进一步调小圆角，从12px改为8px */
+   cursor: pointer;
+   transition: all 0.3s ease;
+   color: #2d3748; /* 深色文本，确保可读性 */
+   position: relative;
+   overflow: hidden;
+   height: 40px; /* 从60px减少到40px，只为1行文本提供空间 */
+   flex-shrink: 0; /* 防止项目被压缩 */
+   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%) !important; /* 渐变白色背景 */
+   border: 1px solid rgba(226, 232, 240, 0.8) !important; /* 浅灰色边框 */
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !important; /* 多层阴影 */
+ }
+
+/* 完全移除彩虹渐变描边，保持简洁的白色背景 */
+.chat-container.light-theme .conversation-item {
+  border: 1px solid rgba(226, 232, 240, 0.8) !important; /* 直接使用浅灰色边框 */
+  position: relative;
+}
+
+.chat-container.light-theme .conversation-item::after {
+  display: none !important; /* 完全隐藏彩虹渐变描边 */
+}
+
+ .status-icon {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 18px; /* 稍微调小一点，与按钮高度更协调 */
+   height: 18px;
+   flex-shrink: 0;
+   font-size: 14px; /* 与按钮字体大小保持一致 */
+ }
+
+ .loading-indicator {
+   color: #f59e0b; /* 橙色，表示加载中 */
+   animation: pulse-opacity 1.5s ease-in-out infinite;
+ }
+
+ .response-indicator {
+   color: #10b981; /* 绿色，表示已回答 */
+ }
+
+ .pending-indicator {
+   color: #6b7280; /* 灰色，表示待处理 */
+ }
+
+/* 完全移除::before伪元素，避免hover时显示任何蒙层效果 */
+.conversation-item::before {
+  display: none !important; /* 完全隐藏::before伪元素 */
+}
+
+/* 使用最强的选择器确保hover状态样式被正确应用 */
+.conversation-item:hover,
+.chat-container .conversation-item:hover,
+.chat-container .conversation-sidebar .conversation-item:hover,
+.chat-container .conversation-sidebar .conversation-list .conversation-item:hover,
+.chat-container .conversation-sidebar .conversation-list .conversation-item:hover::before,
+.chat-container .conversation-sidebar .conversation-list .conversation-item:hover::after {
+  /* hover状态：底色不变，文字轻微浮动+加粗 */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%) !important; /* 底色保持不变 */
+  border: 1px solid rgba(226, 232, 240, 0.8) !important; /* 保持浅灰色边框 */
+  transform: translateY(-2px); /* 文字轻微浮动，从-1px改为-2px */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important; /* 轻微增强阴影效果 */
+  color: #2d3748 !important; /* 文本颜色保持不变 */
+}
+
+/* 额外确保所有可能的hover状态都被覆盖 */
+.chat-container .conversation-sidebar .conversation-list .conversation-item:hover * {
+  color: #2d3748 !important;
+}
+
+/* hover状态下文字加粗效果 */
+.chat-container .conversation-sidebar .conversation-list .conversation-item:hover .question-content {
+  font-weight: 600 !important; /* 文字加粗 */
+}
+
+/* 完全移除选中态的特殊样式，选中和非选中时保持完全一致 */
+.conversation-item.active,
+.chat-container .conversation-item.active,
+.chat-container .conversation-item.active:hover,
+.chat-container .conversation-item.active:focus,
+.chat-container .conversation-item.active:focus-within {
+  /* 选中态使用与非选中态完全相同的样式 */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  color: #2d3748 !important;
+  font-weight: 400 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 使用最强的选择器确保样式被应用 */
+.chat-container .conversation-sidebar .conversation-list .conversation-item.active,
+.chat-container .conversation-sidebar .conversation-list .conversation-item.active:hover,
+.chat-container .conversation-sidebar .conversation-list .conversation-item.active:focus {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  color: #2d3748 !important;
+  font-weight: 400 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+}
+
+.question-preview {
+  flex: 1;
+  min-width: 0; /* 确保文本可以正确换行 */
+  width: 100%; /* 确保宽度自适应 */
+  box-sizing: border-box; /* 确保padding不会影响宽度计算 */
+  display: flex;
+  align-items: center; /* 垂直居中，让1行文本在正中央 */
+  justify-content: flex-start; /* 左对齐 */
+}
+
+/* 左侧问题列表的问题内容样式 */
+.question-preview .question-content {
+  font-size: 12px; /* 字体从13px调小到12px */
+  line-height: 1.4; /* 确保行高作用于文本 */
+  /* 只显示1行文本，超出部分用省略号 */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1; /* 标准属性，提高兼容性 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word; /* 支持长单词换行 */
+  text-align: left; /* 确保文本左对齐 */
+  width: 100%; /* 确保宽度自适应 */
+  /* 精确计算1行文本的高度：12px * 1.4 = 16.8px */
+  max-height: 17px; /* 确保1行文本能完整显示 */
+  /* 确保文本容器有足够空间显示1行 */
+  min-height: 17px;
+}
+
+/* 右侧回答区域的问题内容样式 */
+.selected-question .question-content {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  width: 100%;
+  word-break: break-word;
+}
+
+/* ==================== 右侧内容区样式 ==================== */
+.chat-content {
+  flex: 1;
+  min-width: 0;
+  animation: fadeIn 0.8s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 从20px减少到10px，让上下两部分更紧凑 */
+  padding-right: 0; /* 移除右侧padding，让输入框和输出框宽度一致 */
+  height: calc(100vh - 80px); /* 减少高度约束，让底部间距更合理 */
+}
+
+/* 输出结果框 */
+.output-section {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%) !important; /* 与LIST的conversation-item保持一致 */
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important; /* 与LIST的conversation-item保持一致 */
+  border-radius: 8px; /* 与LIST保持一致 */
+  padding: 16px; /* 从20px减少到16px，让左右距离更平衡 */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !important; /* 与LIST的conversation-item保持一致 */
+  transition: all 0.3s ease;
+  min-height: 280px; /* 从300px减少到280px，让模块更紧凑 */
+  max-height: none; /* 移除最大高度限制，让flex布局自动分配 */
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* 确保输出框占满容器宽度 */
+  overflow: hidden; /* 隐藏溢出内容 */
+}
+
+/* 移除hover动画，避免影响阅读体验 */
+/* .output-section:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+} */
+
+.output-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px; /* 从20px减少到16px，让头部更紧凑 */
+  padding-bottom: 12px; /* 从16px减少到12px，让分割线更紧凑 */
+  border-bottom: 1px solid var(--border-glass);
+  flex-shrink: 0; /* 防止头部被压缩 */
+  justify-content: flex-start; /* 左侧并排，操作区用 margin-left: auto 推到右侧 */
+}
+
+.output-title,
+.output-section .output-title,
+.output-section .output-header .output-title {
+  /* 样式与LIST相同 */
+  font-size: 12px !important; /* 与LIST的sidebar-title完全一致，使用!important避免被index.css覆盖 */
+  font-weight: 500 !important; /* 与LIST的sidebar-title完全一致，使用!important避免被index.css覆盖 */
+  color: #718096 !important; /* 与LIST的sidebar-title完全一致，使用!important避免被index.css覆盖 */
+  margin: 0 !important;
+  text-align: left !important; /* 居左对齐 */
+  text-transform: uppercase !important; /* 与LIST的sidebar-title完全一致，使用!important避免被index.css覆盖 */
+  letter-spacing: 2px !important; /* 与LIST的sidebar-title完全一致，使用!important避免被index.css覆盖 */
+}
+
+.output-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto; /* 将操作区推到最右侧 */
+}
+
+.copy-markdown-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; /* 与LIST中的new-chat-button保持一致 */
+  height: 24px; /* 与LIST中的new-chat-button保持一致 */
+  border-radius: 50%;
+  border: 1px solid rgba(66, 133, 244, 0.2);
+  background: rgba(66, 133, 244, 0.08);
+  color: var(--gemini-blue);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-markdown-button:hover:not(:disabled) {
+  background: rgba(66, 133, 244, 0.16);
+}
+
+.copy-markdown-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.output-icon {
+  color: var(--gemini-blue);
+}
+
+.output-content {
+  flex: 1;
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-y: auto; /* 添加垂直滚动条 */
+  overflow-x: hidden; /* 隐藏水平滚动条 */
+  padding-right: 8px; /* 为滚动条留出空间 */
+  text-align: left; /* 确保内容左对齐 */
+}
+
+/* 自定义输出内容滚动条样式 */
+.output-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.output-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.output-content::-webkit-scrollbar-thumb {
+  background: rgba(66, 133, 244, 0.3);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.output-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(66, 133, 244, 0.5);
+}
+
+/* 输入区域 - 使用独特的类名避免冲突 */
+.chatpage2-input-container {
+  display: flex;
+  flex-direction: column; /* 垂直布局 */
+  gap: 8px; /* 减少间距 */
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 8px;
+  padding: 16px; /* 与上方输出框 padding:16px 对齐，让左右距离更平衡 */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+  width: 100%; /* 确保输入框容器占满可用宽度 */
+  flex-shrink: 0; /* 防止输入框被压缩 */
+  margin-bottom: 0; /* 移除底部间距，让输入框更靠下 */
+  min-height: 0; /* 允许flex子项正确收缩 */
+}
+
+/* 输入框和发送按钮的容器 */
+.input-send-container {
+  display: flex;
+  align-items: flex-end; /* 底部对齐 */
+  gap: 8px; /* 输入框和按钮之间的间距 */
+  width: 100%; /* 确保容器占满宽度 */
+}
+
+/* 输入框包装器 */
+.input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  width: 100%; /* 确保包装器占满宽度 */
+}
+
+/* 输入框头部样式已移除，展开按钮现在在输入框内部 */
+
+.expand-toggle-button {
+  position: absolute;
+  right: 8px;
+  bottom: 4px; /* 从8px调整到4px，与新的输入框高度匹配 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: rgba(66, 133, 244, 0.1);
+  border-radius: 50%;
+  color: var(--gemini-blue);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 11; /* 功能层 */
+}
+
+.expand-toggle-button:hover {
+  background: rgba(66, 133, 244, 0.2);
+  transform: scale(1.1);
+}
+
+/* 展开状态 */
+.chatpage2-input-container.expanded {
+  height: 50vh; /* 减少到50%的高度，不会太高 */
+  min-height: 300px; /* 减少最小高度 */
+  padding: 20px; /* 展开态保持与输出框一致的内边距 */
+}
+
+.chatpage2-input-container.expanded .input-send-container {
+  flex: 1; /* 容器占据剩余空间 */
+  display: flex;
+  flex-direction: column; /* 展开时改为垂直布局 */
+  gap: 8px;
+  width: 100%; /* 确保展开时占满宽度 */
+  align-items: stretch; /* 拉伸子项宽度并去除底部对齐，避免顶部留白 */
+  justify-content: flex-start; /* 顶部开始排列，消除上方空白 */
+}
+
+.chatpage2-input-container.expanded .input-wrapper {
+  flex: 1; /* 输入框包装器占据剩余空间 */
+  width: 100%; /* 确保展开时占满宽度 */
+  min-height: 0; /* 允许flex子项正确收缩 */
+  align-items: stretch; /* 让textarea在垂直方向拉伸填满 */
+  display: flex; /* 明确设置flex，避免继承干扰 */
+  flex-direction: column; /* 改为纵向，让textarea的flex生效按高度拉伸 */
+}
+
+.chatpage2-input-container.expanded .chatpage2-chat-input {
+  flex: 1; /* 输入框占据剩余空间 */
+  min-height: 200px; /* 减少最小高度，不会太高 */
+  max-height: none; /* 展开状态下移除高度限制 */
+  resize: none; /* 禁用手动调整大小 */
+  padding: 10px 40px 10px 14px; /* 保持右侧空间给展开按钮 */
+  width: 100%; /* 确保输入框占满容器宽度 */
+  box-sizing: border-box; /* 确保padding不会影响宽度计算 */
+  height: 100%; /* 填满包装器的高度，消除顶部空白 */
+}
+
+.chatpage2-input-container.expanded .chatpage2-send-button {
+  align-self: flex-end; /* 展开时按钮保持在底部右侧 */
+}
+
+/* 确保展开状态下有足够的底部间距 */
+.chatpage2-input-container.expanded {
+  padding-bottom: 16px; /* 从24px减少到16px，让底部更紧凑 */
+  margin-bottom: 8px; /* 从16px减少到8px，让距离页面下方更近 */
+}
+
+.chatpage2-input-container:focus-within {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  /* 移除聚焦时的边框颜色变化 */
+}
+
+.chatpage2-chat-input {
+  flex: 1;
+  padding: 8px 40px 8px 14px; /* 从9px调整回8px，减少上下间距 */
+  border: none; /* 确保输入框本身没有边框 */
+  background: transparent;
+  font-size: 14px; /* 保持14px */
+  color: var(--text-primary);
+  resize: none;
+  outline: none;
+  min-height: 36px; /* 从34px调整到36px，确保能容纳文字内容 */
+  max-height: 36px; /* 从34px调整到36px，保持1行但确保高度足够 */
+  font-family: inherit;
+  line-height: 1.4; /* 从1.3调整回1.4，让文字有合适的高度 */
+  border-radius: 12px; /* 增加圆角 */
+  transition: all 0.3s ease;
+  width: 100%; /* 确保输入框占满容器宽度 */
+  text-align: left; /* 确保输入文本左对齐 */
+}
+
+/* 展开状态下的输入框 */
+.chatpage2-input-container.expanded .chatpage2-chat-input {
+  flex: 1; /* 输入框占据剩余空间 */
+  min-height: 200px; /* 减少最小高度，不会太高 */
+  max-height: none; /* 展开状态下移除高度限制 */
+  resize: none; /* 禁用手动调整大小 */
+  height: 100%; /* 再次声明，避免被后续规则覆盖 */
+}
+
+.chatpage2-chat-input::placeholder {
+  color: #666666 !important; /* 深灰色，确保在浅色背景下清晰可见 */
+  font-size: 14px; /* 从16px调小到14px，与输入框字体保持一致 */
+  opacity: 0.9; /* 提高不透明度，让暗文更清晰 */
+}
+
+.chatpage2-chat-input:focus {
+  background: rgba(255, 255, 255, 0.08); /* 增加聚焦时的背景色 */
+}
+
+/* 自定义输入框滚动条样式 - 与回答区域保持一致 */
+.chatpage2-chat-input::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatpage2-chat-input::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.chatpage2-chat-input::-webkit-scrollbar-thumb {
+  background: rgba(66, 133, 244, 0.3);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.chatpage2-chat-input::-webkit-scrollbar-thumb:hover {
+  background: rgba(66, 133, 244, 0.5);
+}
+
+.chatpage2-send-button {
+  width: 36px; /* 从34px调整到36px，与新的输入框高度匹配 */
+  height: 36px; /* 从34px调整到36px，与新的输入框高度匹配 */
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(15px) !important;
+  -webkit-backdrop-filter: blur(15px) !important;
+  color: var(--gemini-blue);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  font-size: 0; /* 确保按钮内容居中 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.chatpage2-send-button:hover:not(.disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(66, 133, 244, 0.3);
+}
+
+.chatpage2-send-button:active:not(.disabled) {
+  transform: scale(0.95);
+}
+
+.chatpage2-send-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #9aa0a6 0%, #5f6368 100%);
+}
+
+/* 侧边栏头部 */
+.sidebar-header {
+  display: flex;
+  justify-content: center; /* 改为居中对齐，让标题居中 */
+  align-items: center;
+  padding-top: 12px; /* 顶部距离从16px减少到12px */
+  margin-bottom: 12px; /* 从6px增加到12px，与第一个问题块距离更远一点 */
+  position: relative; /* 为绝对定位的新聊天按钮提供参考 */
+}
+
+.new-chat-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: var(--gemini-blue);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  position: absolute; /* 绝对定位，不干扰标题居中 */
+  right: 0; /* 放在右侧 */
+  top: 50%; /* 垂直居中 */
+  transform: translateY(-50%); /* 精确垂直居中 */
+}
+
+.new-chat-button:hover {
+  background: var(--gemini-dark);
+  transform: scale(1.1);
+}
+
+/* 空状态样式 */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+}
+
+.empty-state p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.empty-messages {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+}
+
+.empty-messages h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.empty-messages p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 消息列表样式 */
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.message-item {
+  display: flex;
+  gap: 12px;
+  animation: messageSlideIn 0.3s ease-out;
+}
+
+.message-item.user {
+  flex-direction: row-reverse;
+}
+
+.message-item.assistant {
+  flex-direction: row;
+}
+
+.message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.message-item.user .message-avatar {
+  background: var(--gemini-blue);
+}
+
+.message-item.assistant .message-avatar {
+  background: rgba(66, 133, 244, 0.1);
+}
+
+.message-content {
+  flex: 1;
+  max-width: calc(100% - 44px);
+}
+
+.message-item.user .message-content {
+  text-align: right;
+}
+
+.message-item.assistant .message-content {
+  text-align: left;
+}
+
+.message-content p {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  display: inline-block;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.message-item.user .message-content p {
+  background: var(--gemini-blue);
+  color: white;
+}
+
+.message-item.assistant .message-content p {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+/* 消息动画 */
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式设计调整 */
+@media (max-width: 1024px) {
+  .chat-content {
+    padding-right: 16px;
+    gap: 16px; /* 移动端减少间距 */
+  }
+  
+  .output-section {
+    min-height: 250px; /* 移动端减少高度 */
+  }
+}
+
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 1024px) {
+  .conversation-sidebar {
+    display: none;
+  }
+
+  .chat-main {
+    padding: 88px 16px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-header {
+    padding: 0 16px;
+  }
+
+  .chat-title {
+    font-size: 16px;
+  }
+
+  .nav-button span {
+    display: none;
+  }
+}
+
+/* ==================== 动画优化 ==================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==================== 问答模块样式 ==================== */
+/* 使用最强选择器确保样式不被覆盖 */
+.question-answer-container,
+.chat-container .question-answer-container,
+.chat-container .chat-content .question-answer-container,
+.chatpage2-input-container .question-answer-container,
+.chatpage2-input-container + .question-answer-container,
+.chatpage2-input-container ~ .question-answer-container,
+.chatpage2-input-container .chat-content .question-answer-container,
+.chatpage2-input-container + .chat-content .question-answer-container,
+.chatpage2-input-container ~ .chat-content .question-answer-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important; /* 从16px减少到12px，减少输入框和AI回答之间的距离 */
+  padding: 16px !important; /* 从20px减少到16px，减少整体顶部和底部的距离 */
+}
+
+/* 最强优先级选择器 - 使用:where()确保最高优先级 */
+:where(.chatpage2-input-container ~ .question-answer-container),
+:where(.chatpage2-input-container + .question-answer-container),
+:where(.chatpage2-input-container .question-answer-container) {
+  gap: 12px !important; /* 从16px减少到12px，减少输入框和AI回答之间的距离 */
+  padding: 16px !important;
+}
+
+.selected-question,
+.chat-container .selected-question,
+.chat-container .chat-content .selected-question,
+.chat-container .question-answer-container .selected-question,
+.chatpage2-input-container .selected-question,
+.chatpage2-input-container + .selected-question,
+.chatpage2-input-container ~ .selected-question,
+.chatpage2-input-container .question-answer-container .selected-question,
+.chatpage2-input-container + .question-answer-container .selected-question,
+.chatpage2-input-container ~ .question-answer-container .selected-question {
+  /* 复用左侧问题列表的非hover样式 */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%) !important;
+  border-radius: 8px !important; /* 与左侧问题列表保持一致 */
+  padding: 12px 16px !important; /* 从16px 20px减少到12px 16px，让问题模块更紧凑 */
+  border: 1px solid rgba(226, 232, 240, 0.8) !important; /* 与左侧问题列表保持一致 */
+  position: relative !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !important; /* 与左侧问题列表保持一致 */
+}
+
+/* 最强优先级选择器 - 使用:where()确保最高优先级 */
+:where(.chatpage2-input-container ~ .question-answer-container .selected-question),
+:where(.chatpage2-input-container + .question-answer-container .selected-question),
+:where(.chatpage2-input-container .question-answer-container .selected-question) {
+  padding: 12px 16px !important;
+}
+
+/* 移除彩虹渐变描边，保持简洁样式 */
+.chat-container.light-theme .selected-question {
+  border: 1px solid rgba(226, 232, 240, 0.8) !important; /* 直接使用浅灰色边框 */
+  position: relative;
+}
+
+.chat-container.light-theme .selected-question::after {
+  display: none !important; /* 完全隐藏彩虹渐变描边 */
+}
+
+/* 右侧回答区域的问题内容样式 - 基础样式 */
+.question-content {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #2d3748 !important; /* 与左侧问题列表保持一致 */
+  width: 100%;
+  word-break: break-word; /* 基础状态使用break-word */
+}
+
+/* 2-line clamp by default */
+.question-content.clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2; /* 标准属性，提高兼容性 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all; /* 改为break-all，确保长单词能正确截断 */
+  white-space: normal;
+  max-height: 42px; /* 14px * 1.5 * 2 = 42px */
+}
+
+/* expanded shows all */
+.question-content.expanded {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-word; /* 展开状态下保持break-word，允许自然换行 */
+  max-height: none;
+}
+
+/* toggle button */
+.toggle-expand {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  border-radius: 999px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #333;
+  box-shadow: var(--shadow-soft);
+}
+
+.toggle-expand:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* 拖拉条样式 */
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  width: 8px;
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.resize-handle:hover {
+  background: rgba(66, 133, 244, 0.3);
+}
+
+.resize-handle:active {
+  background: rgba(66, 133, 244, 0.5);
+}
+
+/* 拖拉时的全局样式 */
+body.resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.gemini-answer {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  border: none;
+}
+
+
+
+.loading-answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+}
+
+.loading-text {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.no-answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: var(--text-hint);
+}
+
+.no-answer-text {
+  font-size: 16px;
+  font-style: italic;
+}
+
+/* ==================== 流式输出动画样式 ==================== */
+
+/* 流式内容容器 */
+.streaming-content {
+  position: relative;
+  overflow: hidden;
+}
+
+/* 打字机光标效果 */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: var(--gemini-blue);
+  margin-left: 2px;
+  animation: blink 1s infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 流式Markdown容器 */
+.streaming-markdown {
+  line-height: 1.6;
+  word-wrap: break-word;
+  position: relative;
+}
+
+/* 流式字符样式 - 简化版本，避免闪烁 */
+.streaming-char {
+  display: inline-block;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* 流式字符动画 - 使用CSS transition而不是animation */
+.streaming-char.visible {
+  opacity: 1;
+}
+
+/* Markdown内容容器 */
+.markdown-content {
+  position: relative;
+  z-index: 10; /* 内容层 */
+}
+
+/* 淡入内容效果 */
+.fade-in-content {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: contentFadeIn 0.8s ease-out forwards;
+}
+
+/* 内容淡入动画 */
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 分段内容样式 */
+.content-segment {
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: segmentFadeIn 0.6s ease-out forwards;
+}
+
+/* 分段淡入动画 */
+@keyframes segmentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 代码块样式 - 浅色背景 */
+.content-segment pre {
+  background-color: #f8f9fa !important;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 16px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+.content-segment code {
+  background-color: #f8f9fa;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.9em;
+}
+
+/* 逐字流式显示样式 */
+.character-streaming {
+  position: relative;
+}
+
+.character-streaming .markdown-content {
+  display: inline;
+}
+
+/* 打字机光标样式 */
+.typing-cursor {
+  display: inline-block;
+  color: #007acc;
+  font-weight: bold;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 文本流和Markdown流容器 */
+.text-stream, .markdown-stream {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: opacity 0.5s ease;
+}
+
+.text-stream {
+  z-index: 10; /* 内容层 */
+  background: white;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.markdown-stream {
+  z-index: 10; /* 内容层 */
+}
+
+/* 流式进度指示器 */
+.streaming-progress {
+  position: relative;
+  height: 3px;
+  background: rgba(66, 133, 244, 0.1);
+  border-radius: 2px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.streaming-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gemini-blue), var(--gemini-light));
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.streaming-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Markdown格式淡入动画 */
+@keyframes fadeInMarkdown {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 内容块容器 */
+.content-chunk {
+  opacity: 1;
+  transform: none;
+  position: relative;
+}
+
+/* 内容块容器 */
+.content-chunk {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 流式输出进度指示器 */
+.streaming-progress {
+  position: relative;
+  height: 3px;
+  background: rgba(66, 133, 244, 0.1);
+  border-radius: 2px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.streaming-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gemini-blue), var(--gemini-light));
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.streaming-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* 移除内容块悬停效果，避免回答结果hover时浮动 */
+.content-chunk:hover {
+  /* 移除hover时的浮动效果 */
+  transform: none;
+  transition: none;
+}
+
+/* 流式输出完成后的最终状态 */
+.streaming-complete .content-chunk {
+  animation: finalize 0.5s ease-out forwards;
+}
+
+@keyframes finalize {
+  to {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(66, 133, 244, 0.1);
+  }
+}
+
+/* 响应式动画调整 */
+@media (prefers-reduced-motion: reduce) {
+  .content-chunk,
+  .streaming-progress-bar,
+  .typing-cursor {
+    animation: none;
+    transition: none;
+  }
+}

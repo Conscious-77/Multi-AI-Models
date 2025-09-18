@@ -1,3 +1,32 @@
+# Dependencies & build outputs
+node_modules/
+build/
+dist/
+.cache/
+*.log
+
+# Environment & local data
+.env
+chat_history.db
+*.sqlite
+
+# Runtime generated
+uploads/
+public/generated/
+public/generated_user/
+server*.log
+frontend*.log
+
+# Temp/test assets (adjust as needed)
+image_*.png
+image_*.jpg
+image_*.jpeg
+image_*.svg
+test-*
+
+# Vercel local files
+.vercel/
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies

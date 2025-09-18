@@ -1,0 +1,697 @@
+/* HomePage2 专用样式（作用域：.home2 容器内） */
+
+/* 全局CSS重置 - 确保输入框完全透明 */
+.home2 textarea,
+.home2 input[type="text"],
+.home2 input[type="search"],
+.home2 input[type="email"],
+.home2 input[type="password"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+.home2 .home-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.home2 .background-layer {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 50%, rgba(255,255,255,.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(66,133,244,.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.home2 .floating-particles { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+.home2 .particle { position: absolute; width: 4px; height: 4px; background: rgba(255,255,255,.5); border-radius: 50%; animation: home2-float-up 15s infinite linear; }
+@keyframes home2-float-up {
+  from { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10% { opacity: .5; }
+  90% { opacity: .5; }
+  to { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+}
+
+.home2 .main-container { display: flex; height: 100vh; position: relative; z-index: 10; align-items: stretch; justify-content: center; }
+.home2 .brand-section { width: 30%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(255,255,255,.05); border-right: 1px solid rgba(255,255,255,.1); }
+.home2 .brand-content { text-align: center; }
+.home2 .brand-title { font-size: 42px; font-weight: 200; letter-spacing: -1px; color: rgba(255,255,255,.95); margin-bottom: 10px; }
+.home2 .brand-subtitle { font-size: 12px; color: rgba(255,255,255,.5); letter-spacing: 2px; text-transform: uppercase; }
+.home2 .minimal-lines { position: absolute; width: 60%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent); top: 50%; left: 20%; transform: translateY(10px); }
+
+/* 模型选择器样式 */
+.home2 .model-selector {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home2 .model-selector-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.home2 .model-selector-dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.home2 .model-selector-current {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  min-width: 240px;
+}
+
+.home2 .model-selector-current:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.home2 .model-selector-arrow {
+  color: rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s ease;
+}
+
+.home2 .model-selector-dropdown:hover .model-selector-arrow {
+  transform: rotate(180deg);
+}
+
+/* 下拉菜单样式 */
+.home2 .model-selector-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+  z-index: 999;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 280px;
+}
+
+.home2 .model-selector-item {
+  padding: 12px 16px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.home2 .model-selector-item:last-child {
+  border-bottom: none;
+}
+
+.home2 .model-selector-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 1);
+}
+
+.home2 .model-selector-item.active {
+  background: rgba(66, 133, 244, 0.2);
+  color: rgba(255, 255, 255, 1);
+  border-left: 3px solid rgba(66, 133, 244, 0.8);
+}
+
+/* 新增：模型选择器项目内容样式 */
+.home2 .model-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.home2 .model-item-name {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.home2 .model-item-description {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+/* 新增：分层模型选择器样式 */
+.home2 .model-group {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.home2 .model-group:last-child {
+  border-bottom: none;
+}
+
+.home2 .model-group-header {
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.home2 .model-group-name {
+  display: flex;
+  align-items: center;
+}
+
+.home2 .model-variant-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px 10px 32px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.home2 .model-variant-item:last-child {
+  border-bottom: none;
+}
+
+.home2 .model-variant-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 1);
+}
+
+.home2 .model-variant-item.active {
+  background: rgba(66, 133, 244, 0.2);
+  color: rgba(255, 255, 255, 1);
+  border-left: 3px solid rgba(66, 133, 244, 0.8);
+}
+
+.home2 .variant-name {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.home2 .variant-cost {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.home2 .editor-section { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; padding: 60px; }
+.home2 .typora-editor { width: 100%; max-width: 980px; position: relative; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+
+/* 打字机模式容器 - 简化为居中输入框 */
+.home2 .typewriter-container {
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  align-items: flex-start; /* 改为顶部对齐，让输入框和左侧文字对齐 */
+  justify-content: center; /* 水平居中 */
+  position: relative;
+  overflow: hidden;
+  padding-top: 30vh; /* 增加顶部内边距，从20vh改为25vh，让输入框再往下移动 */
+}
+
+.home2 .editor-wrapper { 
+  width: 100%; 
+  height: 100%;
+  overflow: visible; /* 改为visible，避免滚动条影响居中 */
+  padding: 0; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: flex-start; /* 改为顶部对齐 */
+  gap: 0;
+  position: relative;
+}
+
+/* 美化主容器的滚动条 */
+.home2 .editor-wrapper::-webkit-scrollbar { 
+  width: 8px;
+  background: transparent;
+}
+
+.home2 .editor-wrapper::-webkit-scrollbar-track { 
+  background: transparent; /* 移除底色，改为完全透明 */
+  border-radius: 4px;
+  margin: 2px 0;
+}
+
+.home2 .editor-wrapper::-webkit-scrollbar-thumb { 
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.home2 .editor-wrapper::-webkit-scrollbar-thumb:hover { 
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.4));
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scaleX(1.1);
+}
+
+.home2 .editor-wrapper::-webkit-scrollbar-thumb:active { 
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.5));
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 为Firefox添加主容器滚动条样式 */
+.home2 .editor-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent; /* 移除底色 */
+}
+
+/* 移除复杂的视觉指示器 */
+/* .home2 .typewriter-container::before 删除 */
+
+/* 简化的行样式 */
+.home2 .editor-line { 
+  width: 100%; 
+  max-width: 800px; /* 增加最大宽度，从600px改为800px，让输入框更宽 */
+  height: auto; /* 自适应高度 */
+  line-height: 1.6; 
+  padding: 0; 
+  position: relative; 
+  transition: all .3s ease; 
+  display: flex; 
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+  gap: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* 简化的活动行样式 */
+.home2 .editor-line.active { 
+  transform: none; /* 移除缩放效果 */
+  background: transparent; /* 移除背景色 */
+  border-radius: 0;
+}
+
+/* 移除左边框指示器 */
+/* .home2 .editor-line.active::before 删除 */
+
+/* 简化的非活动行样式 */
+.home2 .editor-line.inactive {
+  opacity: 1; /* 恢复完全不透明 */
+  transform: none; /* 移除缩放效果 */
+}
+
+.home2 .editor-line.inactive .editor-input {
+  color: rgba(255,255,255,.88); /* 恢复正常颜色 */
+}
+
+/* 简化的输入框样式 - 单个大textarea */
+.home2 .editor-input { 
+  position: relative; /* 改为相对定位 */
+  width: 100%; /* 占满容器宽度 */
+  height: auto; /* 自适应高度 */
+  min-height: 400px; /* 进一步增加最小高度，从300px改为400px */
+  max-height: 800px; /* 进一步增加最大高度，从600px改为800px */
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none; 
+  outline: none; 
+  font-family: 'SF Mono','Monaco','Fira Code', monospace; 
+  font-size: 18px; 
+  color: rgba(255,255,255,.88); 
+  caret-color: #4285f4; 
+  transition: all .3s ease; 
+  resize: none; /* 禁用手动调整大小 */
+  overflow-y: auto; /* 改为auto，支持垂直滚动 */
+  overflow-x: hidden; /* 保持水平隐藏 */
+  padding: 16px 60px 16px 16px; /* 右侧留出60px空间给发送按钮 */
+  margin: 0;
+  box-sizing: border-box;
+  text-indent: 0;
+  line-height: 2.0; /* 增加行高，从1.6改为2.0，增加换行行距 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-radius: 8px; /* 添加圆角 */
+}
+
+/* 简化的活动行输入框 */
+.home2 .editor-input.active {
+  color: rgba(255,255,255,.95);
+  font-weight: 500;
+}
+
+/* 简化的非活动行输入框 */
+.home2 .editor-input.inactive {
+  color: rgba(255,255,255,.88);
+  font-weight: 400;
+}
+
+/* 自定义滚动条样式 - 美化版本 */
+.home2 .editor-input::-webkit-scrollbar {
+  width: 8px; /* 稍微加宽一点 */
+}
+
+.home2 .editor-input::-webkit-scrollbar-track {
+  background: transparent; /* 移除底色，改为完全透明 */
+  border-radius: 4px;
+  margin: 2px 0;
+}
+
+.home2 .editor-input::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.home2 .editor-input::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.4));
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scaleX(1.1); /* 悬停时稍微加宽 */
+}
+
+.home2 .editor-input::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.5));
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 为Firefox添加滚动条样式 */
+.home2 .editor-input {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent; /* 移除底色 */
+}
+
+.home2 .editor-input::placeholder { 
+  color: rgba(255,255,255,.28); 
+  font-style: italic; 
+  text-indent: 0; /* 确保placeholder也没有缩进 */
+}
+
+/* 移除textarea的默认样式 */
+.home2 .editor-input::-webkit-input-placeholder {
+  background: transparent;
+}
+
+.home2 .editor-input::-moz-placeholder {
+  background: transparent;
+}
+
+.home2 .editor-input:-ms-input-placeholder {
+  background: transparent;
+}
+
+/* 确保所有状态下的输入框都是透明的 */
+.home2 .editor-input:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.home2 .editor-input:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 移除打字机光标 */
+/* .home2 .typewriter-cursor 删除 */
+
+/* 发送按钮样式 - 适配大textarea */
+.home2 .send-button { 
+  position: absolute; /* 使用绝对定位 */
+  right: 20px; /* 调整位置，从16px改为20px */
+  top: 20px; /* 调整位置，从16px改为20px */
+  width: 36px; 
+  height: 36px; 
+  border: none; 
+  background: transparent; 
+  backdrop-filter: none; 
+  -webkit-backdrop-filter: none; 
+  color: rgba(255,255,255,.85); 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  transition: all .2s ease; 
+  opacity: 1; 
+  pointer-events: all; 
+  z-index: 10; /* 确保按钮在最上层 */
+}
+
+.home2 .send-button:disabled { 
+  opacity: .5; 
+  cursor: not-allowed; 
+}
+
+.home2 .send-button:hover { 
+  color: #ffffff; 
+  transform: scale(1.08); 
+}
+
+.home2 .send-button:active { 
+  transform: scale(.95); 
+}
+
+/* HomePage2 专用历史侧边栏（避免影响其他页面） */
+.home2 .history-button { 
+  position: fixed; 
+  left: 30px; 
+  bottom: 30px; 
+  width: 44px; 
+  height: 44px; 
+  border-radius: 50%; 
+  background: rgba(255,255,255,.1); 
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255,255,255,.2); 
+  color: rgba(255,255,255,.8); 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  transition: all .3s ease; 
+  z-index: 100; 
+}
+
+.home2 .history-button:hover { 
+  background: rgba(255,255,255,.15); 
+  transform: scale(1.1) rotate(15deg); 
+}
+
+/* Agent 测试页面按钮 */
+.home2 .agent-button { 
+  position: fixed; 
+  left: 90px; /* 在历史记录按钮右侧 */
+  bottom: 30px; 
+  width: 44px; 
+  height: 44px; 
+  border-radius: 50%; 
+  background: rgba(103, 126, 234, 0.2); /* 使用紫色主题 */
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(103, 126, 234, 0.3); 
+  color: rgba(255,255,255,.9); 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  transition: all .3s ease; 
+  z-index: 100; 
+}
+
+.home2 .agent-button:hover { 
+  background: rgba(103, 126, 234, 0.3); 
+  transform: scale(1.1) rotate(-15deg); /* 反向旋转，与历史按钮区分 */
+  box-shadow: 0 4px 20px rgba(103, 126, 234, 0.4);
+}
+
+/* 历史记录侧边栏 */
+.home2 .history-sidebar {
+  position: fixed;
+  top: 0;
+  left: -400px; /* 改为左侧 */
+  width: 400px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255, 255, 255, 0.2); /* 改为右边框 */
+  transition: left 0.3s ease; /* 改为left动画 */
+  z-index: 998;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.home2 .history-sidebar.open {
+  left: 0; /* 改为左侧显示 */
+}
+
+.home2 .history-header {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 历史记录分类样式 */
+.home2 .history-category {
+  margin-bottom: 20px;
+}
+
+.home2 .category-header {
+  margin-bottom: 10px;
+}
+
+.home2 .category-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.home2 .history-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home2 .history-item {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.home2 .history-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.home2 .history-item-title {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.home2 .history-item-preview {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.home2 .history-item-time {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+}
+
+.home2 .history-loading {
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.home2 .overlay { 
+  position: fixed; 
+  inset: 0; 
+  background: rgba(0,0,0,.3); 
+  opacity: 0; 
+  pointer-events: none; 
+  transition: opacity .3s ease; 
+  z-index: 80; 
+}
+
+.home2 .overlay.active { 
+  opacity: 1; 
+  pointer-events: all; 
+}
+
+.home2 .shortcut-hint { 
+  position: fixed; 
+  bottom: 30px; 
+  right: 30px; 
+  font-size: 12px; 
+  color: rgba(255,255,255,.3); 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
+
+.home2 .shortcut-key { 
+  display: inline-block; 
+  padding: 2px 6px; 
+  background: rgba(255,255,255,.1); 
+  border-radius: 4px; 
+  margin: 0 2px; 
+  font-family: 'SF Mono', monospace; 
+}
+
+@media (max-width: 1024px) {
+  .home2 .editor-section { padding: 40px; }
+  .home2 .brand-title { font-size: 36px; }
+  .home2 .editor-line { max-width: 700px; } /* 中等屏幕稍微缩小一点 */
+}
+
+@media (max-width: 768px) {
+  .home2 .brand-section { display: none; }
+  .home2 .editor-section { padding: 30px 20px; }
+  .home2 .editor-line { 
+    padding: 0; /* 移除padding，让输入框自己控制内边距 */
+    max-width: 90%; /* 移动端使用百分比宽度，更灵活 */
+  }
+  .home2 .history-sidebar { width: 80%; }
+  .home2 .send-button { right: 20px; top: 20px; } /* 确保发送按钮位置正确 */
+  .home2 .shortcut-hint { display: none; }
+}
+

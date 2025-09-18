@@ -1,0 +1,13 @@
+{
+  "tool_call": {
+    "name": "generate_pdf",
+    "args": {
+      "title": "每周状态报告",
+      "content_markdown": "# 本周工作\n- 完成 A\n- 推进 B\n\n## 下周计划\n- 开始 C",
+      "filename": "weekly_report.pdf"
+    }
+  }
+}
+
+
+

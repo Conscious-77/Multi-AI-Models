@@ -1,0 +1,1222 @@
+/* HomePage2 专用样式（作用域：.home2 容器内） */
+
+/* 全局CSS重置 - 确保输入框完全透明 */
+/* 全局CSS重置 - 确保输入框完全透明 */
+.home2 textarea,
+.home2 input[type="text"],
+.home2 input[type="search"],
+.home2 input[type="email"],
+.home2 input[type="password"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+.home2 .home-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffeef8 0%, #f0f8ff 50%, #e6e6fa 100%);
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.home2 .background-layer {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 50%, rgba(255,255,255,.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(66,133,244,.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* 光球效果 */
+.home2 .light-orbs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.home2 .light-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.6;
+}
+
+/* 光球1 - 粉色 */
+.home2 .light-orb:nth-child(1) {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #ffb3d9 0%, #ff8ac4 50%, #ff69b4 100%);
+  top: -100px;
+  left: -150px;
+  animation: home2-float-orb1 25s infinite ease-in-out;
+}
+
+/* 光球2 - 淡蓝色 */
+.home2 .light-orb:nth-child(2) {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, #b3d9ff 0%, #8ac4ff 50%, #69b4ff 100%);
+  top: 50%;
+  right: -100px;
+  animation: home2-float-orb2 30s infinite ease-in-out;
+}
+
+/* 光球3 - 紫色 */
+.home2 .light-orb:nth-child(3) {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #d1b3ff 0%, #b366ff 50%, #9933ff 100%);
+  bottom: -80px;
+  left: 30%;
+  animation: home2-float-orb3 28s infinite ease-in-out;
+}
+
+/* 光球4 - 淡绿色 */
+.home2 .light-orb:nth-child(4) {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, #b3ffd9 0%, #8affc4 50%, #69ffb4 100%);
+  top: 20%;
+  left: 60%;
+  animation: home2-float-orb4 22s infinite ease-in-out;
+}
+
+/* 光球浮动动画 */
+@keyframes home2-float-orb1 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(30px, -20px) scale(1.1) rotate(90deg); }
+  50% { transform: translate(-20px, 30px) scale(0.9) rotate(180deg); }
+  75% { transform: translate(20px, 20px) scale(1.05) rotate(270deg); }
+}
+
+@keyframes home2-float-orb2 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(-30px, -20px) scale(1.1) rotate(-90deg); }
+  50% { transform: translate(20px, 30px) scale(0.9) rotate(-180deg); }
+  75% { transform: translate(-20px, 20px) scale(1.05) rotate(-270deg); }
+}
+
+@keyframes home2-float-orb3 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(25px, -15px) scale(1.05) rotate(45deg); }
+  50% { transform: translate(-15px, 25px) scale(0.95) rotate(90deg); }
+  75% { transform: translate(15px, 15px) scale(1.02) rotate(135deg); }
+}
+
+@keyframes home2-float-orb4 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(-25px, -15px) scale(1.05) rotate(-45deg); }
+  50% { transform: translate(15px, 25px) scale(0.95) rotate(-90deg); }
+  75% { transform: translate(-15px, 15px) scale(1.02) rotate(-135deg); }
+}
+
+/* 光球呼吸效果 */
+@keyframes home2-breathe {
+  0%, 100% { opacity: 0.6; filter: blur(120px); }
+  50% { opacity: 0.8; filter: blur(100px); }
+}
+
+/* 为每个光球添加呼吸动画 */
+.home2 .light-orb:nth-child(1) {
+  animation: home2-float-orb1 25s infinite ease-in-out, home2-breathe 8s infinite ease-in-out;
+}
+
+.home2 .light-orb:nth-child(2) {
+  animation: home2-float-orb2 30s infinite ease-in-out, home2-breathe 10s infinite ease-in-out;
+}
+
+.home2 .light-orb:nth-child(3) {
+  animation: home2-float-orb3 28s infinite ease-in-out, home2-breathe 12s infinite ease-in-out;
+}
+
+.home2 .light-orb:nth-child(4) {
+  animation: home2-float-orb4 22s infinite ease-in-out, home2-breathe 6s infinite ease-in-out;
+}
+
+.home2 .floating-particles { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+.home2 .particle { position: absolute; width: 4px; height: 4px; background: rgba(255,255,255,.5); border-radius: 50%; animation: home2-float-up 15s infinite linear; }
+@keyframes home2-float-up {
+  from { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10% { opacity: .5; }
+  90% { opacity: .5; }
+  to { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+}
+
+.home2 .main-container { display: flex; height: 100vh; position: relative; z-index: 10; align-items: flex-start; justify-content: center; }
+.home2 .brand-section { 
+  width: 30%; 
+  height: 100%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  position: relative; 
+  backdrop-filter: blur(20px); 
+  -webkit-backdrop-filter: blur(20px); 
+  background: rgba(255,255,255,.15); 
+  border-right: 1px solid rgba(255,255,255,.2); 
+}
+.home2 .brand-content { text-align: center; }
+.home2 .brand-title { 
+  font-size: 42px; 
+  font-weight: 300; 
+  letter-spacing: -1px; 
+  color: #2d3748; 
+  margin-bottom: 10px; 
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.home2 .brand-subtitle { 
+  font-size: 12px; 
+  color: #718096; 
+  letter-spacing: 2px; 
+  text-transform: uppercase; 
+  font-weight: 500;
+}
+.home2 .minimal-lines { 
+  position: absolute; 
+  width: 60%; 
+  height: 1px; 
+  background: linear-gradient(90deg, transparent, rgba(45,55,72,.3), transparent); 
+  top: 50%; 
+  left: 20%; 
+  transform: translateY(20px); 
+}
+
+/* 模型选择器样式 */
+.home2 .model-selector {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home2 .model-selector-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.home2 .model-selector-dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.home2 .model-selector-current {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  color: #2d3748;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  min-width: 240px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.home2 .model-selector-current:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(102, 126, 234, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+}
+
+.home2 .model-selector-arrow {
+  color: #718096;
+  transition: transform 0.3s ease;
+}
+
+.home2 .model-selector-dropdown:hover .model-selector-arrow {
+  transform: rotate(180deg);
+}
+
+/* 下拉菜单样式 */
+.home2 .model-selector-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 8px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+  z-index: 999;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 280px;
+}
+
+.home2 .model-selector-item {
+  padding: 12px 16px;
+  color: #2d3748;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.home2 .model-selector-item:last-child {
+  border-bottom: none;
+}
+
+.home2 .model-selector-item:hover {
+  background: rgba(102, 126, 234, 0.08);
+  color: #2d3748;
+}
+
+.home2 .model-selector-item.active {
+  background: rgba(102, 126, 234, 0.15);
+  color: #2d3748;
+  border-left: 3px solid rgba(102, 126, 234, 0.8);
+}
+
+/* 新增：模型选择器项目内容样式 */
+.home2 .model-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.home2 .model-item-name {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.home2 .model-item-description {
+  font-size: 12px;
+  color: #718096;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+/* 新增：分层模型选择器样式 */
+.home2 .model-group {
+  border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.home2 .model-group:last-child {
+  border-bottom: none;
+}
+
+.home2 .model-group-header {
+  padding: 12px 16px;
+  background: rgba(102, 126, 234, 0.08);
+  color: #4a5568;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.15);
+}
+
+.home2 .model-group-name {
+  display: flex;
+  align-items: center;
+}
+
+.home2 .model-variant-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px 10px 32px;
+  color: #2d3748;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.05);
+}
+
+.home2 .model-variant-item:last-child {
+  border-bottom: none;
+}
+
+.home2 .model-variant-item:hover {
+  background: rgba(102, 126, 234, 0.08);
+  color: #2d3748;
+}
+
+.home2 .model-variant-item.active {
+  background: rgba(102, 126, 234, 0.15);
+  color: #2d3748;
+  border-left: 3px solid rgba(102, 126, 234, 0.8);
+}
+
+.home2 .variant-name {
+  font-weight: 400;
+  color: #2d3748;
+}
+
+.home2 .variant-cost {
+  font-size: 16px;
+  color: #718096;
+}
+
+.home2 .editor-section { flex: 1; display: flex; align-items: flex-start; justify-content: center; position: relative; padding: 0; height: 100vh; }
+.home2 .typora-editor { width: 100%; max-width: 980px; position: relative; display: flex; align-items: flex-start; justify-content: center; margin: 0 auto; height: auto; }
+
+/* 移除旧的打字机容器样式 */
+
+/* 移除旧的editor-wrapper样式 */
+
+/* 移除旧的editor-wrapper滚动条样式 */
+
+/* 移除复杂的视觉指示器 */
+/* .home2 .typewriter-container::before 删除 */
+
+/* 移除旧的editor-line样式 */
+
+/* 输入区域 */
+.home2 .input-section {
+  flex: 1;
+  display: flex;
+  align-items: flex-end; /* 改为底部对齐 */
+  justify-content: center;
+  position: relative;
+  padding: 0;
+}
+
+.home2 .input-container {
+  width: 100%;
+  max-width: 65vw; /* 使用视口宽度，避免溢出 */
+  position: fixed;
+  bottom: 45vh; /* 输入框再往下一些 */
+  left: 65%; /* 位于右侧非brand的正中间（30% + 35% = 65%） */
+  transform: translateX(-50%); /* 水平居中到右侧区域 */
+  display: flex;
+  align-items: flex-end; /* 底部对齐 */
+  justify-content: center;
+  overflow: visible;
+  padding: 0;
+  z-index: 10;
+  /* 确保容器不会因为内容变化而移动 */
+  height: auto;
+  min-height: 0;
+}
+
+/* 新的输入框包装容器 - 纯透明原生效果 */
+.home2 .input-wrapper {
+  width: 100%;
+  position: relative;
+  background: transparent; /* 纯透明背景 */
+  padding: 20px;
+  /* 移除所有边框和描边 */
+}
+
+/* 输入框样式 - 使用CSS实现从下往上输入 */
+.home2 .editor-input {
+  position: relative !important;
+  width: 100% !important;
+  height: 360px !important; /* 固定高度：10行 * 2.0行高 * 18px字体 = 360px */
+  background: transparent !important;
+  border: none !important; /* 移除红色调试边框 */
+  outline: none !important;
+  font-family: 'SF Mono','Monaco','Fira Code', monospace !important;
+  font-size: 18px !important;
+  color: #1a202c !important;
+  caret-color: #667eea !important;
+  resize: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  hyphens: auto !important;
+  padding: 16px 80px 16px 16px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  text-indent: 0 !important;
+  line-height: 1.8 !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  /* 强制重置可能冲突的样式 */
+  display: block !important;
+  vertical-align: top !important;
+  text-align: left !important;
+  /* 调整padding-top计算，让内容靠输入框最下方 */
+  padding-top: calc(360px - 32px) !important; /* 总高度 - 上下padding，让内容从底部开始 */
+  padding-bottom: 16px !important;
+}
+
+/* 移除旧的输入框状态样式 */
+
+/* 移除旧的滚动条样式 */
+
+/* 为Firefox添加滚动条样式 */
+/* 细滚动条样式 - 很不起眼 */
+.home2 .editor-input::-webkit-scrollbar {
+  width: 4px; /* 非常细的滚动条 */
+}
+
+.home2 .editor-input::-webkit-scrollbar-track {
+  background: transparent; /* 完全透明 */
+}
+
+.home2 .editor-input::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1); /* 非常淡的灰色 */
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.home2 .editor-input::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2); /* 稍微深一点 */
+}
+
+/* Firefox滚动条 */
+.home2 .editor-input {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}
+
+.home2 .editor-input::placeholder { 
+  color: #718096; 
+  font-style: italic; 
+  text-indent: 0; /* 确保placeholder也没有缩进 */
+}
+
+/* 注释：测试页面没有的placeholder样式 */
+/* .home2 .editor-input::-webkit-input-placeholder {
+  background: transparent;
+}
+
+.home2 .editor-input::-moz-placeholder {
+  background: transparent;
+}
+
+.home2 .editor-input:-ms-input-placeholder {
+  background: transparent;
+} */
+
+/* 注释：测试页面没有的焦点和悬停状态样式 */
+/* .home2 .editor-input:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+  outline: none;
+}
+
+.home2 .editor-input:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+} */
+
+/* 移除打字机光标 */
+/* .home2 .typewriter-cursor 删除 */
+
+/* 发送按钮样式 - 适配大textarea */
+/* 发送按钮样式 - 适配新的包装容器 */
+.home2 .send-button {
+  position: absolute;
+  right: 20px; /* 减少右边距，避免挡住文字 */
+  bottom: 20px; /* 减少底边距，避免挡住文字 */
+  width: 52px;
+  height: 44px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  color: #667eea;
+  cursor: pointer;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 20;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 注释：测试页面没有的disabled状态样式 */
+/* .home2 .send-button:disabled { 
+  opacity: .5; 
+  cursor: not-allowed; 
+  background: rgba(160, 174, 192, 0.2);
+  color: #a0aec0;
+  border-color: rgba(160, 174, 192, 0.3);
+} */
+
+/* 注释：测试页面没有的hover和active状态样式 */
+/* .home2 .send-button:hover { 
+  background: rgba(255, 255, 255, 0.25); 
+  color: #667eea; 
+  transform: scale(1.02); 
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.home2 .send-button:active { 
+  transform: scale(.98); 
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.2);
+} */
+
+/* HomePage2 专用历史侧边栏（避免影响其他页面） */
+.home2 .history-button { 
+  position: fixed; 
+  left: 30px; 
+  bottom: 30px; 
+  width: 44px; 
+  height: 44px; 
+  border-radius: 50%; 
+  background: rgba(255,255,255,.1); 
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255,255,255,.2); 
+  color: rgba(255,255,255,.8); 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  transition: all .3s ease; 
+  z-index: 100; 
+}
+
+.home2 .history-button:hover { 
+  background: rgba(255,255,255,.15); 
+  transform: scale(1.1) rotate(15deg); 
+}
+
+/* Agent 测试页面按钮 */
+.home2 .agent-button { 
+  position: fixed; 
+  left: 90px; /* 在历史记录按钮右侧 */
+  bottom: 30px; 
+  width: 44px; 
+  height: 44px; 
+  border-radius: 50%; 
+  background: rgba(103, 126, 234, 0.2); /* 使用紫色主题 */
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(103, 126, 234, 0.3); 
+  color: rgba(255,255,255,.9); 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  transition: all .3s ease; 
+  z-index: 100; 
+}
+
+.home2 .agent-button:hover { 
+  background: rgba(103, 126, 234, 0.3); 
+  transform: scale(1.1) rotate(-15deg); /* 反向旋转，与历史按钮区分 */
+  box-shadow: 0 4px 20px rgba(103, 126, 234, 0.4);
+}
+
+/* 历史记录侧边栏 - 磨砂玻璃效果 */
+.home2 .history-sidebar {
+  position: fixed;
+  top: 0;
+  left: -400px; /* 改为左侧 */
+  width: 400px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  transition: left 0.3s ease;
+  z-index: 998;
+  overflow-y: auto;
+  padding: 30px;
+  box-sizing: border-box;
+  box-shadow: 4px 0 32px rgba(0, 0, 0, 0.12);
+}
+
+.home2 .history-sidebar.open {
+  left: 0; /* 改为左侧显示 */
+}
+
+.home2 .history-header {
+  color: #1a202c;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(45, 55, 72, 0.2);
+}
+
+/* 历史记录分类样式 */
+.home2 .history-category {
+  margin-bottom: 20px;
+}
+
+.home2 .category-header {
+  margin-bottom: 10px;
+}
+
+.home2 .category-label {
+  color: #4a5568;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.home2 .history-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home2 .history-item {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.home2 .history-item:hover {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.home2 .history-item-title {
+  color: #1a202c;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.home2 .history-item-preview {
+  color: #4a5568;
+  font-size: 12px;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.home2 .history-item-time {
+  color: #718096;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.home2 .history-loading {
+  color: #4a5568;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.home2 .overlay { 
+  position: fixed; 
+  inset: 0; 
+  background: rgba(0,0,0,.2); 
+  opacity: 0; 
+  pointer-events: none; 
+  transition: opacity .3s ease; 
+  z-index: 80; 
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.home2 .overlay.active { 
+  opacity: 1; 
+  pointer-events: all; 
+}
+
+.home2 .shortcut-hint { 
+  position: fixed; 
+  bottom: 30px; 
+  right: 30px; 
+  font-size: 12px; 
+  color: rgba(255,255,255,.3); 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
+
+.home2 .shortcut-key { 
+  display: inline-block; 
+  padding: 2px 6px; 
+  background: rgba(255,255,255,.1); 
+  border-radius: 4px; 
+  margin: 0 2px; 
+  font-family: 'SF Mono', monospace; 
+}
+
+@media (max-width: 1024px) {
+  .home2 .editor-section { padding: 40px; }
+  .home2 .brand-title { font-size: 36px; }
+  /* 移除旧的editor-line媒体查询 */
+}
+
+/* 文件上传容器 */
+.home2 .file-upload-container {
+  position: absolute;
+  right: 80px; /* 在发送按钮左边 */
+  bottom: 20px;
+  z-index: 20;
+}
+
+/* 文件上传按钮样式 - 与发送按钮一致 */
+.home2 .file-upload-button {
+  position: relative;
+  width: 52px;
+  height: 44px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  color: #667eea;
+  cursor: pointer;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.home2 .file-upload-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #667eea;
+  transform: scale(1.02);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.home2 .file-upload-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.home2 .file-upload-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(160, 174, 192, 0.2);
+  color: #a0aec0;
+  border-color: rgba(160, 174, 192, 0.3);
+}
+
+/* Hover提示框样式 */
+.home2 .file-upload-tooltip {
+  position: absolute;
+  bottom: 60px; /* 在按钮上方 */
+  right: -20px; /* 稍微向左偏移，与按钮对齐 */
+  width: 280px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 30;
+}
+
+.home2 .file-upload-container:hover .file-upload-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.home2 .tooltip-content {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.home2 .tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px 12px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.home2 .tooltip-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(102, 126, 234, 0.15);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #667eea;
+}
+
+.home2 .tooltip-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+}
+
+.home2 .tooltip-body {
+  padding: 16px 20px 20px;
+}
+
+.home2 .tooltip-description {
+  font-size: 14px;
+  color: #4a5568;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.home2 .tooltip-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home2 .tooltip-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.home2 .tooltip-label {
+  color: #718096;
+  font-weight: 500;
+  min-width: 60px;
+}
+
+.home2 .tooltip-value {
+  color: #2d3748;
+  font-weight: 400;
+}
+
+/* 提示框箭头 */
+.home2 .file-upload-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 30px;
+  width: 16px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* 文件上传弹出区域 */
+.home2 .file-upload-popup {
+  position: absolute;
+  bottom: 80px; /* 在按钮上方 */
+  right: 20px;
+  width: 300px;
+  z-index: 25;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* 文件展示区域 - 平级模块，独立于输入区域 */
+.home2 .file-display-section {
+  position: fixed;
+  top: calc(100vh - 45vh + 20px); /* 从输入框下方20px处开始，向下增长 */
+  left: calc(65% - 31.5vw); /* 与输入框左边缘对齐：65% - 32.5vw */
+  z-index: 15; /* 高于主容器和输入框容器 */
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  max-width: 65vw; /* 与输入框相同的最大宽度 */
+  /* 自适应高度，从上而下增加 */
+  height: auto;
+  max-height: calc(100vh - 45vh - 100px); /* 最大高度限制 */
+  /* 确保点击事件可以穿透 */
+  pointer-events: auto;
+}
+
+/* 文件展示容器 - 完全透明，无浮层样式 */
+.home2 .file-display-container {
+  display: flex;
+  flex-direction: row;      /* 横向排列 */
+  flex-wrap: wrap;          /* 宽度不足时换行 */
+  gap: 8px 10px;            /* 行间距与列间距 */
+  /* 自适应高度，从上而下增加 */
+  height: auto;
+  min-height: 60px; /* 最小高度 */
+  max-height: calc(100vh - 45vh - 150px); /* 最大高度限制 */
+  overflow-y: auto; /* 超出时滚动 */
+  /* 确保点击事件可以穿透 */
+  pointer-events: auto;
+  /* 添加底部内边距，让最下面的文件与容器底部有距离 */
+  padding-bottom: 12px;
+  /* 设置最小宽度，确保文件名不被截断 */
+  min-width: 300px;
+  width: 100%;
+}
+
+/* 文件展示项目 - 自适应长度，居左对齐，带边框 */
+.home2 .file-display-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px; /* 增加内边距 */
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* 浅色边框 */
+  transition: all 0.2s ease;
+  min-height: 36px; /* 增加最小高度 */
+  width: fit-content; /* 依据内容宽度 */
+  max-width: 100%;
+  /* 确保阴影跟随圆角，重置可能的全局影响 */
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06) !important;
+  /* 确保圆角生效 */
+  border-radius: 8px !important;
+  /* 确保点击事件可以穿透 */
+  pointer-events: auto;
+  position: relative;
+}
+
+.home2 .file-display-item:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5); /* 浅色边框hover效果 */
+  /* 修正hover阴影：更自然的投影效果，确保跟随圆角 */
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-1px); /* 轻微上移效果 */
+  /* 确保hover时圆角也生效 */
+  border-radius: 8px !important;
+}
+
+.home2 .file-display-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  /* 确保不遮挡删除按钮 */
+  max-width: calc(100% - 40px); /* 为删除按钮留出空间 */
+}
+
+.home2 .file-display-icon {
+  flex-shrink: 0;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.home2 .file-display-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.home2 .file-display-name-size {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.2;
+  justify-content: flex-start;
+}
+
+.home2 .file-display-name {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: unset;
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+}
+
+.home2 .file-display-separator {
+  color: rgba(0, 0, 0, 0.4);
+  font-weight: 300;
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+.home2 .file-display-size {
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 400;
+  flex-shrink: 0;
+}
+
+.home2 .file-display-remove {
+  flex-shrink: 0;
+  width: 28px; /* 增加按钮大小 */
+  height: 28px; /* 增加按钮大小 */
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.7); /* 改为深色，更清晰 */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  /* 确保按钮可点击 */
+  pointer-events: auto;
+  z-index: 20; /* 提高层级 */
+  position: relative; /* 确保定位正确 */
+  margin-left: 8px; /* 与左侧内容保持距离 */
+}
+
+.home2 .file-display-remove:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1); /* 轻微放大效果 */
+}
+
+.home2 .file-preview-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.home2 .file-preview-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.home2 .file-preview-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: #667eea;
+  flex-shrink: 0;
+}
+
+.home2 .file-preview-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.home2 .file-preview-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2d3748;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home2 .file-preview-size {
+  font-size: 12px;
+  color: #718096;
+  margin-top: 2px;
+}
+
+.home2 .file-preview-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #a0aec0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.home2 .file-preview-remove:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .home2 .brand-section { display: none; }
+  .home2 .editor-section { padding: 30px 20px; }
+  /* 移除旧的editor-line移动端样式 */
+  .home2 .history-sidebar { width: 80%; }
+  .home2 .send-button { right: 20px; top: 20px; } /* 确保发送按钮位置正确 */
+  .home2 .shortcut-hint { display: none; }
+}
+
+/* 测试链接样式 */
+.home2 .test-links {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.home2 .test-link {
+  display: inline-block;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #333;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.home2 .test-link:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
