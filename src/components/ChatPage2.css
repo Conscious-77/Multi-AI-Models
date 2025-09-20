@@ -1740,6 +1740,26 @@ body.resizing {
   font-size: 0.9em;
 }
 
+/* 统一 Markdown 渲染后的代码块为浅色主题（覆盖高亮库的默认深色） */
+.markdown-content pre,
+.content-chunk pre {
+  background-color: #f8f9fa !important;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+}
+
+.markdown-content code,
+.content-chunk code {
+  background-color: #f8f9fa !important;
+}
+
+/* rehype-highlight / highlight.js 颜色覆盖为浅色主题 */
+/* 使用 Prism 默认浅色语法颜色，由主题文件控制，不强行覆盖 token 色值 */
+pre code[class*="language-"],
+code[class*="language-"] {
+  background: #f8f9fa !important;
+}
+
 /* 逐字流式显示样式 */
 .character-streaming {
   position: relative;
@@ -1758,7 +1778,6 @@ pre {
   font-family: inherit; /* 活跃块使用等宽预览时不要缩小整体字号 */
   font-size: 14px;
   line-height: 1.6;
-  color: var(--text-primary);
 }
 
 /* 打字机字符动画关键帧（与 JS 中的 animation 名称匹配） */

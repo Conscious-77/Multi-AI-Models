@@ -2,6 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
+// 统一时区为 UTC+8（Asia/Shanghai），避免时间显示偏差
+process.env.TZ = process.env.TZ || 'Asia/Shanghai';
+// 附件兜底开关：默认开启；设置 ATTACHMENT_FALLBACK_ENABLED=false 可关闭
+const ATTACHMENT_FALLBACK_ENABLED = String(process.env.ATTACHMENT_FALLBACK_ENABLED || 'true').toLowerCase() !== 'false';
 
 // 文档解析工具函数
 async function extractDocumentText(filePath, mimeType) {
@@ -51,6 +55,7 @@ const {
   getAllSessions,
   updateSessionActivity,
   updateSessionMessageCount,
+  updateSessionTitle,
   deleteSession,
   sessionExists,
   addMessage,
@@ -684,11 +689,19 @@ app.use(cors({
   // 允许来源从环境变量 FRONTEND_ORIGINS 读取，逗号分隔；默认允许本地开发
   origin: (origin, callback) => {
     try {
-      const raw = (process.env.FRONTEND_ORIGINS || 'http://localhost:1309')
+      const envList = (process.env.FRONTEND_ORIGINS || '')
         .split(',')
         .map(s => s.trim())
         .filter(Boolean);
-      const allowSet = new Set(raw);
+      const devDefaults = [
+        'http://localhost:1309',
+        'http://127.0.0.1:1309',
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'http://localhost:3001',
+        'http://127.0.0.1:3001'
+      ];
+      const allowSet = new Set([...envList, ...devDefaults]);
       if (!origin) return callback(null, true); // 非浏览器请求（如 curl）
       if (allowSet.has(origin)) return callback(null, true);
       return callback(new Error('Not allowed by CORS'));
@@ -827,9 +840,9 @@ app.post('/api/gemini', async (req, res) => {
     
     // 检查是否已经添加过这条用户消息（避免重复）
     const existingMessages = await getSessionMessages(currentSessionId);
-    const messageExists = existingMessages.some(msg => 
-      msg.role === 'user' && msg.content === message
-    );
+    // 仅当“上一条也是用户且内容相同”时视为重复（避免误伤不同轮次相同内容的场景）
+    const lastMsg = existingMessages[existingMessages.length - 1];
+    const messageExists = !!lastMsg && lastMsg.role === 'user' && lastMsg.content === message;
     
     if (!messageExists) {
       // 只在消息不存在时添加
@@ -935,9 +948,8 @@ app.post('/api/gemini/stream', async (req, res) => {
     
     // 检查是否已经添加过这条用户消息（避免重复）
     const existingMessages = await getSessionMessages(currentSessionId);
-    const messageExists = existingMessages.some(msg => 
-      msg.role === 'user' && msg.content === message
-    );
+    const lastMsg = existingMessages[existingMessages.length - 1];
+    const messageExists = !!lastMsg && lastMsg.role === 'user' && lastMsg.content === message;
     
     if (!messageExists) {
       // 只在消息不存在时添加
@@ -1343,6 +1355,28 @@ app.get('/api/sessions/:sessionId', async (req, res) => {
   }
 });
 
+// 更新会话标题
+app.put('/api/sessions/:sessionId/title', async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const { title } = req.body || {};
+    if (!title || !title.trim()) {
+      return res.status(400).json({ error: '标题不能为空' });
+    }
+
+    const session = await getSession(sessionId);
+    if (!session) {
+      return res.status(404).json({ error: '会话不存在' });
+    }
+
+    await updateSessionTitle(sessionId, title.trim());
+    return res.json({ success: true });
+  } catch (error) {
+    console.error('更新会话标题失败:', error);
+    res.status(500).json({ error: '更新会话标题失败' });
+  }
+});
+
 // 删除会话
 app.delete('/api/sessions/:sessionId', async (req, res) => {
   try {
@@ -1435,7 +1469,7 @@ app.post('/api/chat', async (req, res) => {
 
     // 会话级附件兜底：当本轮未显式传附件时，自动聚合会话历史附件（去重/限量/限大小）
     try {
-      if (attachments.length === 0 && currentSessionId) {
+      if (ATTACHMENT_FALLBACK_ENABLED && attachments.length === 0 && currentSessionId) {
         const MAX_ATTACHMENTS = 50; // 数量上限
         const MAX_TOTAL_BYTES = 50 * 1024 * 1024; // 50MB 总大小上限
 
@@ -1483,9 +1517,8 @@ app.post('/api/chat', async (req, res) => {
     
     // 检查是否已经添加过这条用户消息（避免重复）
     const existingMessages = await getSessionMessages(currentSessionId);
-    const messageExists = existingMessages.some(msg => 
-      msg.role === 'user' && msg.content === message
-    );
+    const lastMsg = existingMessages[existingMessages.length - 1];
+    const messageExists = !!lastMsg && lastMsg.role === 'user' && lastMsg.content === message;
     
     let userMessageId = null;
     if (!messageExists) {
@@ -1738,9 +1771,8 @@ app.post('/api/chat/stream', async (req, res) => {
     
     // 检查是否已经添加过这条用户消息（避免重复）
     const existingMessages = await getSessionMessages(currentSessionId);
-    const messageExists = existingMessages.some(msg => 
-      msg.role === 'user' && msg.content === message
-    );
+    const lastMsg = existingMessages[existingMessages.length - 1];
+    const messageExists = !!lastMsg && lastMsg.role === 'user' && lastMsg.content === message;
     
     if (!messageExists) {
       // 只在消息不存在时添加

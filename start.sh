@@ -21,8 +21,8 @@ echo "✅ npm版本: $NPM_VERSION"
 
 # 设置环境变量
 echo "🔑 设置环境变量..."
-export GEMINI_API_KEY="AIzaSyBVUcj_QJszOl9MHNJqZucfKtegsq-0Q4w"
-export USE_VERCEL_PROXY=true
+export TZ=Asia/Shanghai
+export NODE_ENV=production
 export VERCEL_PROXY_URL="https://www.connectmulti.cc/api/proxy"
 export VERCEL_MODEL_PATH="v1beta/models/gemini-2.5-flash:generateContent"
 echo "✅ 环境变量已设置"

@@ -52,7 +52,7 @@ const ChatPage2: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false); // 防重复提交状态
   const isSubmittingRef = useRef(false); // 同步的提交状态引用
   const [currentQuestion, setCurrentQuestion] = useState(''); // 保存当前问题内容
-  const [autoScroll, setAutoScroll] = useState(true); // 是否自动滚动
+  const [autoScroll, setAutoScroll] = useState(false); // 是否自动滚动（默认关闭，避免刷新吸底）
   const [userHasScrolled, setUserHasScrolled] = useState(false); // 用户是否手动滚动过
   // 主题已锁定为浅色，不再使用暗色模式状态
   const [selectedModel, setSelectedModel] = useState(''); // 初始为空，由useEffect设置
@@ -68,14 +68,36 @@ const ChatPage2: React.FC = () => {
   const turnFileInputRef = useRef<HTMLInputElement>(null);
   const hasUploadedInitialFilesRef = useRef(false); // 是否已进行过首轮附件上传
   
-  // 打字机播放标记（每条消息只播放一次）
+  // 打字机播放标记（每条消息只播放一次）+ 本地持久化，避免刷新后重新打字
+  const PLAYED_STORAGE_KEY = 'chat2_played_message_ids';
+  const getPlayedSet = (): Set<string> => {
+    try {
+      const raw = localStorage.getItem(PLAYED_STORAGE_KEY);
+      const arr = raw ? JSON.parse(raw) : [];
+      return new Set(Array.isArray(arr) ? arr : []);
+    } catch (_) {
+      return new Set();
+    }
+  };
+  const persistPlayedSet = (setObj: Set<string>) => {
+    try { localStorage.setItem(PLAYED_STORAGE_KEY, JSON.stringify(Array.from(setObj))); } catch (_) {}
+  };
   const [playedMessageMap, setPlayedMessageMap] = useState<Record<string, boolean>>({});
-  const markPlayed = (id: string) => setPlayedMessageMap(prev => ({ ...prev, [id]: true }));
-  const hasPlayed = (id?: string | null) => !!(id && playedMessageMap[id]);
+  const markPlayed = (id: string) => {
+    setPlayedMessageMap(prev => ({ ...prev, [id]: true }));
+    try { const st = getPlayedSet(); st.add(id); persistPlayedSet(st); } catch (_) {}
+  };
+  const hasPlayed = (id?: string | null) => {
+    if (!id) return false;
+    if (playedMessageMap[id]) return true;
+    try { return getPlayedSet().has(id); } catch (_) { return false; }
+  };
   const [typingProgressMap, setTypingProgressMap] = useState<Record<string, number>>({});
   const TYPING_MAX_CHARS = 20000; // 支持更长文本逐字输出
   const TYPING_MAX_NODES = 2500; // 控制DOM节点上限，长文按块输出
   const TYPING_CHAR_DELAY_MS = 15; // 每字符时延
+  // 仅在第 N+1 轮首次展示时启用打字机的开关（会话级，一次性）
+  const getTypingOnceKey = (sid?: string | null) => `typing_once_flag_${sid || ''}`;
   
   // 兜底修复可能的latin1→utf8乱码文件名
   const fixEncodedName = (name?: string): string => {
@@ -217,13 +239,16 @@ const ChatPage2: React.FC = () => {
     } catch (_) {}
   }, []);
 
-  // 当选中消息变化时，重置滚动状态
+  // 当选中消息变化时，吸顶展示，不再吸底
   useEffect(() => {
-    if (selectedMessageId) {
-      setUserHasScrolled(false);
-      setAutoScroll(true);
-      console.log('🔄 消息切换，重置滚动状态');
-    }
+    if (!selectedMessageId) return;
+    setUserHasScrolled(true);
+    setAutoScroll(false);
+    try {
+      const c = outputSectionRef.current;
+      if (c) c.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (_) {}
+    console.log('🔄 消息切换，吸顶展示');
   }, [selectedMessageId]);
 
   // 真正的流式内容渲染函数（自适应分块，保障长文本性能）
@@ -363,14 +388,7 @@ const ChatPage2: React.FC = () => {
             <span className="typing-cursor">|</span>
           </pre>
         )}
-        <div style={{ marginTop: 8 }}>
-          <button
-            onClick={() => { setIdx(text.length); if (onProgress) onProgress(text.length); onDone(); }}
-            style={{ fontSize: 12, color: 'var(--text-secondary)', border: 'none', background: 'transparent', cursor: 'pointer' }}
-          >
-            跳过打字
-          </button>
-        </div>
+        <div style={{ marginTop: 8, display: 'none' }}></div>
       </div>
     );
   };
@@ -641,6 +659,12 @@ model.compile(optimizer='adam',
 
         setCurrentSession(newSession);
         setCurrentQuestion(initialMessage);
+        // 首轮也选中“加载中”占位并滚动，确保右侧展示问题+Thinking
+        try { setSelectedMessageId('loading'); } catch (_) {}
+        try {
+          const c = outputSectionRef.current;
+          if (c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' });
+        } catch (_) {}
         setCurrentSessionId(actualSessionId);
         setChatTitle(newSession.title);
         setTempTitle(newSession.title);
@@ -649,6 +673,7 @@ model.compile(optimizer='adam',
         console.log('📁 待上传文件数量:', fileData.length);
 
         console.log('🔍 直接调用API，不使用临时ID');
+        try { sessionStorage.setItem(getTypingOnceKey(actualSessionId), '1'); } catch (_) {}
         await fetchAIResponseDirect(actualSessionId, initialMessage, fileData);
 
         // 标记本会话已消费message，并清理URL
@@ -875,13 +900,13 @@ model.compile(optimizer='adam',
         message.attachments = list;
       }
         
-        const session: Session = {
-          id: sessionId,
-          title: sessionData.title,
+      const session: Session = {
+        id: sessionId,
+        title: sessionData.title,
         messages: messages,
-          createdAt: new Date(sessionData.created_at),
-          lastActivity: new Date(sessionData.last_activity)
-        };
+        createdAt: new Date(sessionData.createdAt || sessionData.created_at),
+        lastActivity: new Date(sessionData.lastActivity || sessionData.last_activity)
+      };
         
         setCurrentSession(session);
         setCurrentSessionId(sessionId);
@@ -909,16 +934,59 @@ model.compile(optimizer='adam',
     setTempTitle(chatTitle);
   };
 
-  const handleTitleSave = () => {
-    setChatTitle(tempTitle);
+  const handleTitleSave = async () => {
+    const newTitle = (tempTitle || '').trim();
+    if (!newTitle) {
+      setIsEditingTitle(false);
+      return;
+    }
+
+    // 先本地更新，提升响应速度
+    setChatTitle(newTitle);
     setIsEditingTitle(false);
-    
-    // 更新当前会话的标题
     if (currentSession) {
       setCurrentSession(prev => {
         if (!prev) return prev;
-        return { ...prev, title: tempTitle };
+        return { ...prev, title: newTitle };
       });
+    }
+
+    // 同步到后端
+    try {
+      const sid = currentSessionId || currentSession?.id || null;
+      if (sid) {
+        const resp = await authorizedFetch(`/api/sessions/${sid}/title`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: newTitle })
+        });
+        if (!resp.ok) {
+          throw new Error(`保存标题失败: ${resp.status} ${resp.statusText}`);
+        }
+        // 二次确认：读取服务端标题，避免本地与服务端不一致
+        try {
+          const checkResp = await authorizedFetch(`/api/sessions/${sid}`);
+          if (checkResp.ok) {
+            const data = await checkResp.json();
+            if (data && data.title) {
+              setChatTitle(data.title);
+              setCurrentSession(prev => prev ? { ...prev, title: data.title } : prev);
+            }
+          }
+        } catch (_) {}
+      }
+    } catch (e) {
+      console.error('保存标题失败:', e);
+      // 回滚为旧标题
+      setChatTitle(currentSession?.title || '新对话');
+      if (currentSession) {
+        setCurrentSession(prev => {
+          if (!prev) return prev;
+          return { ...prev, title: currentSession.title };
+        });
+      }
+      // 提示失败，但避免打断
+      try { console.warn('保存标题失败，请稍后重试'); } catch (_) {}
     }
   };
 
@@ -1178,6 +1246,14 @@ model.compile(optimizer='adam',
       
       // 保存当前问题内容，用于显示
       setCurrentQuestion(questionContent);
+      // 自动选中第 N+1 轮的“加载中”占位，并滚动到输出区
+      setSelectedMessageId('loading');
+      // 本轮允许一次打字机
+      try { sessionStorage.setItem(getTypingOnceKey(currentSession?.id || currentSessionId), '1'); } catch (_) {}
+      try {
+        const c = outputSectionRef.current;
+        if (c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' });
+      } catch (_) {}
       
       // 清空输入框，但保留待上传文件直到API调用完成
       setInputValue('');
@@ -1405,7 +1481,9 @@ model.compile(optimizer='adam',
             <div className="output-content" ref={outputSectionRef}>
               {(() => {
                 const selectedMessage = currentSession?.messages.find(m => m.id === selectedMessageId);
-                const shouldShowSubmitting = isSubmitting || (!!currentQuestion && !selectedMessageId);
+                const isLoadingPlaceholderSelected = selectedMessageId === 'loading';
+                // 允许在生成中浏览历史：只有未选择任何消息且处于提交/有问题，或选中占位时，才显示提交中的视图
+                const shouldShowSubmitting = isLoadingPlaceholderSelected || (!selectedMessageId && (isSubmitting || !!currentQuestion));
                 
                 console.log('🔍 调试信息:', {
                   selectedMessageId,
@@ -1424,7 +1502,8 @@ model.compile(optimizer='adam',
                             <div className="selected-question">
                             <div className="question-content">
                               {(() => {
-                                const displayText = currentQuestion || selectedMessage?.content || '用户问题';
+                                // 优先显示选中消息的内容；若选中占位或未选择，则显示当前轮输入
+                                const displayText = (isLoadingPlaceholderSelected ? currentQuestion : selectedMessage?.content) || currentQuestion || '用户问题';
                                 console.log('🔍 问题显示调试:', {
                                   'selectedMessage?.content': selectedMessage?.content,
                                   'currentQuestion': currentQuestion,
@@ -1635,6 +1714,30 @@ model.compile(optimizer='adam',
                             {isQuestionExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                           </button>
                         )}
+                        {(() => {
+                          // 在问题块下方（输出文本最上方）提供 Skip 按钮，仅“流式中”显示
+                          const ai = selectedMessage.aiResponse || '';
+                          const typingOnce = (() => { try { return sessionStorage.getItem(getTypingOnceKey(currentSessionId)) === '1'; } catch (_) { return false; } })();
+                          const lastId = currentSession?.messages[currentSession?.messages.length - 1]?.id;
+                          const isCurrentStreaming = typingOnce && selectedMessage.id === lastId && !!ai && !hasPlayed(selectedMessage.id) && ai.length <= TYPING_MAX_CHARS;
+                          if (!isCurrentStreaming) return null;
+                          return (
+                            <div style={{ marginTop: 6 }}>
+                              <button
+                                onClick={() => {
+                                  try {
+                                    markPlayed(selectedMessage.id);
+                                    setTypingProgressMap(prev => ({ ...prev, [selectedMessage.id]: ai.length }));
+                                    try { sessionStorage.removeItem(getTypingOnceKey(currentSessionId)); } catch (_) {}
+                                  } catch (_) {}
+                                }}
+                                style={{ fontSize: 12, color: 'var(--text-secondary)', border: 'none', background: 'transparent', cursor: 'pointer' }}
+                              >
+                                Skip
+                              </button>
+                            </div>
+                          );
+                        })()}
                       </div>
                       
                       {/* 显示附件（优先使用服务端附件；若仍在等待AI且无服务端附件，则临时展示本次pending文件） */}
@@ -1841,7 +1944,10 @@ model.compile(optimizer='adam',
                               );
                             }
 
-                            const shouldType = !hasPlayed(latestSelectedMessage?.id) && aiText.length <= TYPING_MAX_CHARS;
+                            // 仅在“会话本轮的一次性开关存在”且该条未播放过时启用打字机；
+                            // 否则（前 N 轮、刷新后、再次查看）都直接全文
+                            const typingOnce = (() => { try { return sessionStorage.getItem(getTypingOnceKey(currentSessionId)) === '1'; } catch (_) { return false; } })();
+                            const shouldType = typingOnce && !hasPlayed(latestSelectedMessage?.id) && aiText.length <= TYPING_MAX_CHARS;
                             if (shouldType) {
                               return (
                                 <TypingMarkdownView
@@ -1849,7 +1955,7 @@ model.compile(optimizer='adam',
                                   messageId={latestSelectedMessage!.id}
                                   initialIndex={typingProgressMap[latestSelectedMessage!.id] ?? 0}
                                   onProgress={(n) => setTypingProgressMap(prev => ({ ...prev, [latestSelectedMessage!.id]: n }))}
-                                  onDone={() => { markPlayed(latestSelectedMessage!.id); setTypingProgressMap(prev => ({ ...prev, [latestSelectedMessage!.id]: aiText.length })); }}
+                                  onDone={() => { markPlayed(latestSelectedMessage!.id); setTypingProgressMap(prev => ({ ...prev, [latestSelectedMessage!.id]: aiText.length })); try { sessionStorage.removeItem(getTypingOnceKey(currentSessionId)); } catch (_) {} }}
                                 />
                               );
                             }

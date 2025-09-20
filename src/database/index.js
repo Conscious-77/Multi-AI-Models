@@ -16,6 +16,7 @@ module.exports = {
   getAllSessions: sessionRepository.getAllSessions,
   updateSessionActivity: sessionRepository.updateSessionActivity,
   updateSessionMessageCount: sessionRepository.updateSessionMessageCount,
+  updateSessionTitle: sessionRepository.updateSessionTitle,
   deleteSession: sessionRepository.deleteSession,
   sessionExists: sessionRepository.sessionExists,
   getActiveSessionCount: sessionRepository.getActiveSessionCount,

@@ -107,6 +107,21 @@ function updateSessionMessageCount(sessionId) {
 }
 
 /**
+ * 更新会话标题
+ */
+function updateSessionTitle(sessionId, title) {
+  const db = getDatabase();
+
+  const stmt = db.prepare(`
+    UPDATE sessions 
+    SET title = ?, last_activity = CURRENT_TIMESTAMP
+    WHERE id = ?
+  `);
+
+  stmt.run(title, sessionId);
+}
+
+/**
  * 删除会话
  */
 function deleteSession(sessionId) {
@@ -153,6 +168,7 @@ module.exports = {
   getAllSessions,
   updateSessionActivity,
   updateSessionMessageCount,
+  updateSessionTitle,
   deleteSession,
   sessionExists,
   getActiveSessionCount,

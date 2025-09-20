@@ -191,15 +191,14 @@ code {
 }
 
 .markdown-content code {
-  background-color: rgba(0, 0, 0, 0.1);
+  /* 仅保留间距与圆角，颜色交给页面/主题控制 */
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
   font-size: 13px; /* 行内代码字体 */
 }
 
 .markdown-content pre {
-  background-color: #1f2937;
-  color: #f9fafb;
+  /* 去除全局底色和文字色，避免覆盖 Prism token 颜色与页面主题 */
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;

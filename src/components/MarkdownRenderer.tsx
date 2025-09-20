@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import Prism from 'prismjs';
+import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-jsx';
@@ -22,7 +23,7 @@ import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-sql';
 import 'prismjs/components/prism-yaml';
 import 'prismjs/components/prism-markdown';
-import 'prismjs/themes/prism-tomorrow.css';
+import 'prismjs/themes/prism.css';
 import 'katex/dist/katex.min.css';
 
 interface MarkdownRendererProps {
@@ -107,24 +108,45 @@ console.log('📝 MarkdownRenderer渲染:', {
           ),
           // 自定义代码块样式
           code: ({ node, className, children, ...props }: any) => {
-            const match = /language-(\w+)/.exec(className || '');
-            const isInline = !className || !className.includes('language-');
+            // 统一小写并做常见别名映射，避免大小写/别名导致不高亮
+            const raw = (className || '').toLowerCase();
+            const match = /language-([a-z0-9#+-]+)/.exec(raw || '');
+            const isInline = !raw || !raw.includes('language-');
+            const aliasMap: Record<string, string> = {
+              js: 'javascript',
+              jsx: 'jsx',
+              ts: 'typescript',
+              tsx: 'tsx',
+              shell: 'bash',
+              sh: 'bash',
+              csharp: 'csharp',
+              'c#': 'csharp',
+              cs: 'csharp',
+              'c++': 'cpp',
+              cc: 'cpp',
+              hpp: 'cpp',
+              kt: 'kotlin',
+              yml: 'yaml'
+            };
+            const langRaw = match ? match[1] : '';
+            const lang = aliasMap[langRaw] || langRaw;
+            const normalizedClass = lang ? `language-${lang}` : (raw || undefined);
             return !isInline && match ? (
               <pre style={{ 
-                backgroundColor: '#1e1e1e', 
+                backgroundColor: '#f8f9fa',
                 padding: '16px', 
                 borderRadius: '6px',
                 overflow: 'auto',
                 margin: '16px 0',
-                border: '1px solid #333'
+                border: '1px solid #e9ecef'
               }}>
-                <code className={className} {...props}>
+                <code className={normalizedClass} {...props}>
                   {children}
                 </code>
               </pre>
             ) : (
               <code 
-                className={className} 
+                className={normalizedClass} 
                 {...props}
                 style={{ 
                   backgroundColor: '#f6f8fa', 

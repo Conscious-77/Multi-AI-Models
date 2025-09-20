@@ -4,7 +4,6 @@ echo "🚀 启动 0815-gemini-visible 项目 (简化模式)..."
 
 # 设置环境变量
 echo "🔑 设置环境变量..."
-export GEMINI_API_KEY="AIzaSyBVUcj_QJszOl9MHNJqZucfKtegsq-0Q4w"
 export USE_VERCEL_PROXY=true
 export VERCEL_PROXY_URL="https://www.connectmulti.cc/api/proxy"
 export VERCEL_MODEL_PATH="v1beta/models/gemini-2.5-flash:generateContent"
