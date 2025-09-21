@@ -57,6 +57,7 @@ const ChatPage2: React.FC = () => {
   // 主题已锁定为浅色，不再使用暗色模式状态
   const [selectedModel, setSelectedModel] = useState(''); // 初始为空，由useEffect设置
   const selectedModelRef = useRef(''); // 使用ref保持状态，避免被重置
+  const [lastModelName, setLastModelName] = useState<string>(''); // 从历史推断的最近一次模型名
   
   // 文件相关状态
   const [pendingFiles, setPendingFiles] = useState<any[]>([]); // 待上传的文件
@@ -161,44 +162,17 @@ const ChatPage2: React.FC = () => {
 
   // 主题切换函数已移除（浅色锁定）
 
-    // 模型初始化 - 从URL参数或localStorage获取
+  // 模型初始化 - 仅从URL读取；不再使用localStorage
   useEffect(() => {
-    console.log('🔍 模型初始化useEffect开始执行');
     const urlParams = new URLSearchParams(window.location.search);
     const modelFromUrl = urlParams.get('model');
-    
-    // 移除保护逻辑，因为不再有无限循环
-    
-          if (modelFromUrl) {
-        // 从URL参数获取模型
-        console.log('🔍 检测到URL参数中的模型:', modelFromUrl);
-        console.log('🔍 准备调用setSelectedModel:', modelFromUrl);
-        setSelectedModel(modelFromUrl);
-        selectedModelRef.current = modelFromUrl; // 同时更新ref
-        localStorage.setItem('selectedModel', modelFromUrl);
-        console.log('🔄 从URL获取模型:', modelFromUrl);
-        
-        // 状态设置完成
-        console.log('🔄 模型设置完成:', modelFromUrl);
-      } else {
-        // 从localStorage获取模型
-        console.log('🔍 未检测到URL参数，从localStorage获取模型');
-        console.log('🔍 当前URL参数:', window.location.search);
-        console.log('🔍 当前localStorage:', localStorage.getItem('selectedModel'));
-        
-        const savedModel = localStorage.getItem('selectedModel');
-        if (savedModel) {
-          console.log('🔍 准备调用setSelectedModel:', savedModel);
-          setSelectedModel(savedModel);
-          console.log('🔄 从localStorage获取模型:', savedModel);
-        } else {
-          // 没有模型，报错
-          console.error('❌ 错误: 没有指定模型，也没有保存的模型');
-          console.error('❌ 请确保URL中包含model参数，或者之前选择过模型');
-          // 不设置默认值，让用户知道有问题
-        }
-      }
-    console.log('🔍 模型初始化useEffect执行完成');
+    if (modelFromUrl) {
+      setSelectedModel(modelFromUrl);
+      selectedModelRef.current = modelFromUrl;
+    } else {
+      setSelectedModel('');
+      selectedModelRef.current = '';
+    }
   }, []); // 移除selectedModel依赖，避免无限循环
   
   // 调试：监控selectedModel的每次变化（生产环境可移除）
@@ -1357,17 +1331,14 @@ model.compile(optimizer='adam',
                 <span className="model-label">使用模型:</span>
                 <span className="model-name">
                   {(() => {
-                    // 在所有变体中查找匹配的模型
+                    const effective = selectedModel || lastModelName || 'gemini-2.5-flash';
                     for (const group of availableModels) {
                       if (group.variants) {
-                        const variant = group.variants.find(v => v.id === selectedModel);
-                        if (variant) {
-                          return variant.name;
-                        }
+                        const variant = group.variants.find(v => v.id === effective);
+                        if (variant) return variant.name;
                       }
                     }
-                    // 如果没找到，显示原始ID
-                    return selectedModel;
+                    return effective;
                   })()}
                 </span>
               </div>
