@@ -873,6 +873,19 @@ model.compile(optimizer='adam',
         const list = attachmentsByMessageId[message.id] || [];
         message.attachments = list;
       }
+
+      // 基于后端原始消息推断“最近一次实际使用的模型”，用于跨设备/无缓存兜底
+      try {
+        const rawMsgs: any[] = Array.isArray(sessionData.messages) ? sessionData.messages : [];
+        const lastModelMsg = [...rawMsgs].reverse().find((m: any) => m.role === 'model' && (m.model_name || m.model_provider));
+        const inferredModelName: string = lastModelMsg?.model_name || '';
+        setLastModelName(inferredModelName || '');
+        const hasUrlModel = new URLSearchParams(window.location.search).has('model');
+        if (!hasUrlModel && !selectedModelRef.current && inferredModelName) {
+          setSelectedModel(inferredModelName);
+          selectedModelRef.current = inferredModelName;
+        }
+      } catch (_) {}
         
       const session: Session = {
         id: sessionId,
